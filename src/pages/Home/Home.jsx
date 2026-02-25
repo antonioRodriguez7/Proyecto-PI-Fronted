@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import './App.css';
-import Login from './Login';
-import Registro from './Registro';
-import Perfil from './Perfil';
-import Admin from './Admin';
+import './Home.css';
+import Login from '../Login/Login';
+import Registro from '../Registro/Registro';
+import Perfil from '../Perfil/Perfil';
+import Admin from '../Admin/Admin';
 
-function App() {
+function Home() {
     // 1. Creamos el estado para saber si el menú está abierto o cerrado
     const [isInfoOpen, setIsInfoOpen] = useState(false);
     const [isEntradasOpen, setIsEntradasOpen] = useState(false);
@@ -196,4 +196,4 @@ function App() {
     );
 }
 
-export default App;
+export default Home;
