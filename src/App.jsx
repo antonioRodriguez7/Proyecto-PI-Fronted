@@ -168,7 +168,7 @@ function App() {
                 </section>
             </main>
 
-            {/* 4. FOOTER */}
+            {/* 4. FOOTERR */}
             <footer className="footer">
 
                 {/* Izquierda: Redes Sociales */}
