@@ -1,15 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-function Login({ onVolver, onIrRegistro, onLogin }) {
+function Login() {
+
+    const navigate = useNavigate();
+
     return (
         <div className="login-container">
 
-            {/* MITAD IZQUIERDA: FORMULARIO */}
+            {/* MITAD IZQUIERDA */}
             <div className="login-left">
 
-                {/* Logo sirve para volver atrás */}
-                <div className="login-logo" onClick={onVolver}>
+                {/* Logo vuelve al home */}
+                <div className="login-logo" onClick={() => navigate('/')}>
                     <img src="/logoPI.png" alt="Logo Subsonic" />
                 </div>
 
@@ -28,26 +32,45 @@ function Login({ onVolver, onIrRegistro, onLogin }) {
                             <input type="password" placeholder="••••••••" />
                         </div>
 
-                        {/* BOTÓN inicia sesión como 'cliente' */}
-                        <button type="button" className="btn-entrar" onClick={() => onLogin('cliente')}>ENTRAR</button>
+                        {/* Simulación login cliente */}
+                        <button
+                            type="button"
+                            className="btn-entrar"
+                            onClick={() => navigate('/perfil')}
+                        >
+                            ENTRAR
+                        </button>
                     </form>
 
-                    <p style={{textAlign: 'center', marginTop: '15px', fontSize: '13px'}}>
-                        <span style={{color: '#888', cursor: 'pointer'}} onClick={() => onLogin('proveedor')}>
+                    <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '13px' }}>
+                        <span
+                            style={{ color: '#888', cursor: 'pointer' }}
+                            onClick={() => navigate('/admin')}
+                        >
                             [Prueba] Entrar como Proveedor
                         </span>
                     </p>
 
                     <div className="login-links">
-                        <a href="#olvido" className="link-olvido">¿Olvidaste la contraseña?</a>
-                        <p className="link-registro">¿No tienes cuenta? <span onClick={onIrRegistro} style={{cursor: 'pointer', color: '#df188a', fontWeight: 'bold'}}>Regístrate aquí</span></p>
+                        <a href="#olvido" className="link-olvido">
+                            ¿Olvidaste la contraseña?
+                        </a>
+
+                        <p className="link-registro">
+                            ¿No tienes cuenta?
+                            <span
+                                onClick={() => navigate('/registro')}
+                                style={{ cursor: 'pointer', color: '#df188a', fontWeight: 'bold' }}
+                            >
+                                {' '}Regístrate aquí
+                            </span>
+                        </p>
                     </div>
                 </div>
             </div>
 
-            {/* MITAD DERECHA: IMAGEN DEL FESTIVAL */}
-            <div className="login-right">
-            </div>
+            {/* MITAD DERECHA */}
+            <div className="login-right"></div>
 
         </div>
     );
