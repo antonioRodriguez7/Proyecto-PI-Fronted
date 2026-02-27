@@ -1,22 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Admin.css';
 
-function Admin() {
-
-    const navigate = useNavigate();
-
+function Admin({ onLogout }) {
     return (
         <div className="admin-wrapper">
 
             {/* MENÚ LATERAL */}
             <aside className="admin-sidebar">
-
-                <div 
-                    className="admin-logo-container"
-                    onClick={() => navigate('/')}
-                    style={{ cursor: 'pointer' }}
-                >
+                <div className="admin-logo-container">
                     <img src="/logoPI.png" alt="Logo" className="admin-logo" />
                     <p className="admin-badge">ADMIN</p>
                 </div>
@@ -29,17 +20,11 @@ function Admin() {
                 </nav>
 
                 <div className="admin-sidebar-footer">
-                    <button 
-                        className="admin-logout-btn"
-                        onClick={() => navigate('/login')}
-                    >
-                        Cerrar Sesión
-                    </button>
+                    <button className="admin-logout-btn" onClick={onLogout}>Cerrar Sesión</button>
                 </div>
-
             </aside>
 
-            {/* ÁREA PRINCIPAL */}
+            {/* ÁREA DE TRABAJO PRINCIPAL */}
             <main className="admin-main">
 
                 <header className="admin-header">
@@ -48,17 +33,15 @@ function Admin() {
                 </header>
 
                 <div className="admin-content-box">
-                    <h3 className="form-title">
-                        RELLENA LOS CAMPOS CON EL NUEVO ARTISTA
-                    </h3>
+                    <h3 className="form-title">RELLENA LOS CAMPOS CON EL NUEVO ARTISTA</h3>
 
                     <form className="admin-form">
                         <div className="form-grid">
                             <input type="text" placeholder="Nombre del artista / grupo" />
                             <input type="text" placeholder="Género musical" />
 
-                            <input type="date" />
-                            <input type="time" />
+                            <input type="date" placeholder="Fecha de actuación" />
+                            <input type="time" placeholder="Hora de actuación" />
 
                             <input type="text" placeholder="Caché (€)" />
                             <input type="text" placeholder="Escenario asignado" />
@@ -68,12 +51,7 @@ function Admin() {
                         </div>
 
                         <div className="form-actions">
-                            <button 
-                                type="button"
-                                className="btn-add-artist"
-                            >
-                                Añadir artista
-                            </button>
+                            <button type="button" className="btn-add-artist">Añadir artista</button>
                         </div>
                     </form>
                 </div>

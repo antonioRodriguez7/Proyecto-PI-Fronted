@@ -1,19 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-function Login() {
-
-    const navigate = useNavigate();
-
+function Login({ onVolver, onIrRegistro, onLogin }) {
     return (
         <div className="login-container">
 
-            {/* MITAD IZQUIERDA */}
+            {/* MITAD IZQUIERDA: FORMULARIO */}
             <div className="login-left">
 
-                {/* Logo vuelve al home */}
-                <div className="login-logo" onClick={() => navigate('/')}>
+                {/* Logo sirve para volver atrás */}
+                <div className="login-logo" onClick={onVolver}>
                     <img src="/logoPI.png" alt="Logo Subsonic" />
                 </div>
 
@@ -32,45 +28,26 @@ function Login() {
                             <input type="password" placeholder="••••••••" />
                         </div>
 
-                        {/* Simulación login cliente */}
-                        <button
-                            type="button"
-                            className="btn-entrar"
-                            onClick={() => navigate('/perfil')}
-                        >
-                            ENTRAR
-                        </button>
+                        {/* BOTÓN inicia sesión como 'cliente' */}
+                        <button type="button" className="btn-entrar" onClick={() => onLogin('cliente')}>ENTRAR</button>
                     </form>
 
-                    <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '13px' }}>
-                        <span
-                            style={{ color: '#888', cursor: 'pointer' }}
-                            onClick={() => navigate('/admin')}
-                        >
+                    <p style={{textAlign: 'center', marginTop: '15px', fontSize: '13px'}}>
+                        <span style={{color: '#888', cursor: 'pointer'}} onClick={() => onLogin('proveedor')}>
                             [Prueba] Entrar como Proveedor
                         </span>
                     </p>
 
                     <div className="login-links">
-                        <a href="#olvido" className="link-olvido">
-                            ¿Olvidaste la contraseña?
-                        </a>
-
-                        <p className="link-registro">
-                            ¿No tienes cuenta?
-                            <span
-                                onClick={() => navigate('/registro')}
-                                style={{ cursor: 'pointer', color: '#df188a', fontWeight: 'bold' }}
-                            >
-                                {' '}Regístrate aquí
-                            </span>
-                        </p>
+                        <a href="#olvido" className="link-olvido">¿Olvidaste la contraseña?</a>
+                        <p className="link-registro">¿No tienes cuenta? <span onClick={onIrRegistro} style={{cursor: 'pointer', color: '#df188a', fontWeight: 'bold'}}>Regístrate aquí</span></p>
                     </div>
                 </div>
             </div>
 
-            {/* MITAD DERECHA */}
-            <div className="login-right"></div>
+            {/* MITAD DERECHA: IMAGEN DEL FESTIVAL */}
+            <div className="login-right">
+            </div>
 
         </div>
     );

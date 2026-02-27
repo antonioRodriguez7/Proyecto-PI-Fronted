@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import Login from '../Login/Login';
+import Registro from '../Registro/Registro';
+import Perfil from '../Perfil/Perfil';
+import Admin from '../Admin/Admin';
 
 function Home() {
-
-    const navigate = useNavigate();
-
     const [isInfoOpen, setIsInfoOpen] = useState(false);
     const [isEntradasOpen, setIsEntradasOpen] = useState(false);
+    const [pantallaActual, setPantallaActual] = useState('home');
+    const [usuarioLogeado, setUsuarioLogeado] = useState(null);
+
     const [filtroActivo, setFiltroActivo] = useState('Todos');
 
+    // BASE DE DATOS DE ARTISTAS provisional
     const artistas = [
-        { id: 1, nombre: 'Bad Gyal', fecha: '17 Julio 2026', genero: 'Urbano', dia: 'Viernes' },
-        { id: 2, nombre: 'Quevedo', fecha: '18 Julio 2026', genero: 'Urbano', dia: 'Sábado' },
-        { id: 3, nombre: 'Bizarrap', fecha: '19 Julio 2026', genero: 'Electrónica', dia: 'Viernes' },
-        { id: 4, nombre: 'Rosalía', fecha: '20 Julio 2026', genero: 'Urbano', dia: 'Sábado' },
-        { id: 5, nombre: 'Amelie Lens', fecha: '17 Julio 2026', genero: 'Electrónica', dia: 'Viernes' },
+        { id: 1, nombre: 'Bad Gyal', fecha: '17 Julio 2026', genero: 'Urbano', dia: 'Viernes', img: 'Bad Gyal' },
+        { id: 2, nombre: 'Quevedo', fecha: '18 Julio 2026', genero: 'Urbano', dia: 'Sábado', img: 'Quevedo' },
+        { id: 3, nombre: 'Bizarrap', fecha: '19 Julio 2026', genero: 'Electrónica', dia: 'Viernes', img: 'Bizarrap' },
+        { id: 4, nombre: 'Rosalía', fecha: '20 Julio 2026', genero: 'Urbano', dia: 'Sábado', img: 'Rosalía' },
+        { id: 5, nombre: 'Amelie Lens', fecha: '17 Julio 2026', genero: 'Electrónica', dia: 'Viernes', img: 'Amelie Lens' },
     ];
 
     const artistasFiltrados = artistas.filter(artista => {
         if (filtroActivo === 'Todos') return true;
+        // Filtra si coincide con el día o con el género
         return artista.dia === filtroActivo || artista.genero === filtroActivo;
     });
 
@@ -27,21 +32,56 @@ function Home() {
         e.preventDefault();
         setIsInfoOpen(!isInfoOpen);
     };
-
     const toggleEntradas = (e) => {
         e.preventDefault();
         setIsEntradasOpen(!isEntradasOpen);
     };
 
+    if (pantallaActual === 'login') {
+        return <Login
+            onVolver={() => setPantallaActual('home')}
+            onIrRegistro={() => setPantallaActual('registro')}
+            onLogin={(tipo) => {
+                setUsuarioLogeado(tipo);
+                setPantallaActual('home');
+            }}
+        />;
+    }
+
+    if (pantallaActual === 'registro') {
+        return <Registro
+            onVolver={() => setPantallaActual('home')}
+            onIrLogin={() => setPantallaActual('login')}
+        />;
+    }
+
+    if (pantallaActual === 'perfil') {
+        return <Perfil
+            tipoUsuario={usuarioLogeado}
+            onVolver={() => setPantallaActual('home')}
+            onLogout={() => {
+                setUsuarioLogeado(null);
+                setPantallaActual('home');
+            }}
+        />;
+    }
+
+    if (pantallaActual === 'admin') {
+        return <Admin onLogout={() => {
+            setUsuarioLogeado(null);
+            setPantallaActual('home');
+        }} />;
+    }
+
+    // --- PANTALLA PRINCIPAL (HOME) ---
     return (
         <div className="app-container">
 
-            {/* HEADER */}
+            {/* 1. CABECERA */}
             <header className="header">
                 <div className="logo">
                     <img src="/logoPI.png" alt="Logo Subsonic" />
                 </div>
-
                 <nav>
                     <div className="nav-dropdown">
                         <a href="#Entradas" onClick={toggleEntradas}>
@@ -54,7 +94,6 @@ function Home() {
                             </div>
                         )}
                     </div>
-
                     <a href="#Cartel">Cartel</a>
                     <a href="#servicios">Servicios</a>
 
@@ -71,30 +110,25 @@ function Home() {
                     </div>
                 </nav>
 
-                {/* BOTÓN LOGIN */}
-                <button
-                    className="login-btn"
-                    onClick={() => navigate('/login')}
-                >
-                    Acceder / Registro
-                </button>
-
+                {usuarioLogeado ? (
+                    <button className="login-btn" onClick={() => setPantallaActual('perfil')}>MI PERFIL</button>
+                ) : (
+                    <button className="login-btn" onClick={() => setPantallaActual('login')}>Acceder / Registro</button>
+                )}
             </header>
 
             <main>
-
-                {/* HERO */}
+                {/* 2. HERO SECTION */}
                 <section className="hero-section">
                     <h1>SUBSONIC FESTIVAL 2026</h1>
-                    <p className="hero-subtitle">
-                        El mayor evento de música urbana y electrónica del mundo
-                    </p>
+                    <p className="hero-subtitle">El mayor evento de música urbana y electrónica del mundo</p>
                 </section>
 
-                {/* EVENTOS */}
+                {/* 3. SECCIÓN DE EVENTOS Y FILTROS */}
                 <section className="events-section">
                     <h2>Artistas Confirmados</h2>
 
+                    {/* BARRA DE FILTROS DINÁMICA */}
                     <div className="filters-bar">
                         {['Todos', 'Viernes', 'Sábado', 'Electrónica', 'Urbano'].map((nombreFiltro) => (
                             <button
@@ -107,16 +141,15 @@ function Home() {
                         ))}
                     </div>
 
+                    {/* GRID DE ARTISTAS FILTRADOS */}
                     <div className="events-grid">
                         {artistasFiltrados.length > 0 ? (
                             artistasFiltrados.map((artista) => (
                                 <div className="event-card" key={artista.id}>
-                                    <div className="event-image">
-                                        [ Imagen de {artista.nombre} ]
-                                    </div>
+                                    <div className="event-image">[ Imagen de {artista.nombre} ]</div>
                                     <h3>{artista.nombre}</h3>
                                     <p>{artista.fecha}</p>
-                                    <p style={{ fontSize: '0.8rem', color: '#666' }}>
+                                    <p style={{fontSize: '0.8rem', color: '#666'}}>
                                         {artista.genero} | {artista.dia}
                                     </p>
                                     <button>INFO & ENTRADAS</button>
@@ -128,15 +161,12 @@ function Home() {
                     </div>
 
                     <div className="view-more-container">
-                        <button className="view-more-btn">
-                            VER TODO EL CARTEL
-                        </button>
+                        <button className="view-more-btn">VER TODO EL CARTEL</button>
                     </div>
-
                 </section>
             </main>
 
-            {/* FOOTER */}
+            {/* 4. FOOTER */}
             <footer className="footer">
                 <div className="footer-left">
                     <a href="#ig" className="circle-icon">IG</a>
@@ -145,9 +175,7 @@ function Home() {
                 </div>
 
                 <div className="footer-center">
-                    <a href="#proveedores" className="proveedores-link">
-                        Acceso Proveedores
-                    </a>
+                    <a href="#proveedores" className="proveedores-link">Acceso Proveedores</a>
                 </div>
 
                 <div className="footer-right">

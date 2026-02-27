@@ -1,31 +1,22 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Registro.css';
 
-function Registro() {
-
-    const navigate = useNavigate();
-
+function Registro({ onVolver, onIrLogin }) {
+    // Estado para controlar qué tipo de usuario está seleccionado
     const [tipoUsuario, setTipoUsuario] = useState('cliente');
 
     return (
         <div className="registro-wrapper">
 
-            {/* CABECERA */}
+            {/* Cabecera del registro con el logo para volver al Home */}
             <div className="registro-top">
-                <img 
-                    src="/logoPI.png" 
-                    alt="Logo Subsonic" 
-                    className="registro-logo"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => navigate('/')}
-                />
+                <img src="/logoPI.png" alt="Logo Subsonic" className="registro-logo" onClick={onVolver} />
                 <h2>REGISTRO DE USUARIO</h2>
             </div>
 
             <div className="registro-container">
 
-                {/* IZQUIERDA */}
+                {/* COLUMNA IZQUIERDA: Info Personal */}
                 <div className="registro-left">
                     <h3 className="section-title">👤 INFORMACIÓN PERSONAL</h3>
 
@@ -38,9 +29,10 @@ function Registro() {
                     </form>
                 </div>
 
+                {/* LÍNEA DIVISORIA EN MEDIO */}
                 <div className="registro-divider"></div>
 
-                {/* DERECHA */}
+                {/* COLUMNA DERECHA: Tipo de Usuario */}
                 <div className="registro-right">
                     <h3 className="section-title">👥 TIPO DE USUARIO</h3>
 
@@ -51,7 +43,6 @@ function Registro() {
                         >
                             Cliente
                         </div>
-
                         <div
                             className={`tipo-card ${tipoUsuario === 'proveedor' ? 'active' : ''}`}
                             onClick={() => setTipoUsuario('proveedor')}
@@ -60,6 +51,7 @@ function Registro() {
                         </div>
                     </div>
 
+                    {/* Esto SOLO se muestra si elige Proveedor */}
                     {tipoUsuario === 'proveedor' && (
                         <textarea
                             className="descripcion-box"
@@ -70,26 +62,13 @@ function Registro() {
 
                     <div className="terms-group">
                         <input type="checkbox" id="terms" />
-                        <label htmlFor="terms">
-                            Acepto los Términos y Condiciones y la Política de Seguridad
-                        </label>
+                        <label htmlFor="terms">Acepto los Términos y Condiciones y la Política de Seguridad</label>
                     </div>
 
-                    <button 
-                        className="btn-crear"
-                        onClick={() => navigate('/login')}
-                    >
-                        CREAR CUENTA
-                    </button>
+                    <button className="btn-crear">CREAR CUENTA</button>
 
                     <p className="login-link">
-                        ¿Tienes cuenta?
-                        <span 
-                            onClick={() => navigate('/login')}
-                            style={{ cursor: 'pointer', fontWeight: 'bold' }}
-                        >
-                            {' '}Inicia Sesión
-                        </span>
+                        ¿Tienes cuenta? <span onClick={onIrLogin}>Inicia Sesión</span>
                     </p>
                 </div>
 
