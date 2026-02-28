@@ -5,6 +5,7 @@ import Login from "./pages/Login/Login";
 import Registro from "./pages/Registro/Registro";
 import Perfil from "./pages/Perfil/Perfil";
 import Admin from "./pages/Admin/Admin";
+import Cartel from "./pages/Cartel/Cartel";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/registro" element={<Registro />} />
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/cartel" element={<Cartel />} />
     </Routes>
   );
 }
