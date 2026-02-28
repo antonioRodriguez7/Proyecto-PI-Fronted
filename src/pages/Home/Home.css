@@ -68,16 +68,87 @@ body {
 /* =========================================
    2. SECCIÓN PRINCIPAL (HERO)
    ========================================= */
+/* ================= HERO VIDEO ================= */
+
 .hero-section {
-    height: 55vh; /* Ocupa el 70% de la pantalla inicial */
+    position: relative;
+    height: 100vh; /* antes era 100vh */
+    min-height: 600px;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    /* Imagen de fondo de prueba (puedes cambiar la URL por una vuestra) */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+    justify-content: center;
+}
+
+.hero-video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.hero-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.8) 0%,
+        rgba(0,0,0,0.4) 40%,
+        rgba(0,0,0,0.8) 100%
+    );
+    z-index: 2;
+}
+
+/* ================= HERO TEXT ANIMATION ================= */
+
+.hero-content {
+    position: relative;
+    z-index: 3;
     text-align: center;
-    padding-top: 60px;
+    color: white;
+    animation: fadeUp 1.5s ease forwards;
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #ffffff, #00ffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glow 3s ease-in-out infinite alternate;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: #ddd;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+/* Fade + slide animation */
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Glow animation */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px rgba(0,255,255,0.3);
+    }
+    to {
+        text-shadow: 0 0 30px rgba(0,255,255,0.7);
+    }
 }
 
 .hero-section h1 {
@@ -382,4 +453,359 @@ body {
 .dropdown-menu a:hover {
     background-color: rgba(0, 229, 255, 0.1); /* Brillo cian al pasar el ratón */
     color: #00e5ff !important;
+}
+/* ================== TICKETS SECTION ================== */
+
+.tickets-section {
+    padding: 100px 10%;
+    background: linear-gradient(180deg, #101010, #1a1a1a);
+    text-align: center;
+}
+
+.tickets-title {
+    font-size: 2.5rem;
+    color: #00ffff;
+    margin-bottom: 60px;
+}
+
+/* GRID */
+
+.tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+/* CARD */
+
+.ticket-card {
+    background: #1f1f1f;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.4s ease;
+    position: relative;
+}
+
+.ticket-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+}
+
+/* IMAGEN */
+
+.ticket-image-wrapper {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.ticket-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 🔥 CLAVE */
+    display: block;
+}
+
+.ticket-card:hover .ticket-image-wrapper img {
+    transform: scale(1.05);
+}
+
+/* CONTENIDO */
+
+.ticket-content {
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* BADGE */
+
+.ticket-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+    z-index: 2;
+}
+
+.ticket-badge.popular {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+}
+
+.ticket-badge.limitado {
+    background: linear-gradient(45deg, #7b2ff7, #f107a3);
+}
+
+.ticket-badge.nuevo {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed);
+}
+
+/* TITULO */
+
+.ticket-card h3 {
+    font-size: 1.6rem;
+    color: white;
+    text-align: center;
+}
+
+/* PRECIO */
+
+.ticket-price {
+    font-size: 1.4rem;
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+/* BOTON */
+
+.ticket-btn {
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: none;
+    background: #00ffff;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.ticket-btn:hover {
+    background: #00cccc;
+}
+
+.ticket-btn.sold {
+    background: transparent;
+    border: 2px solid #888;
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* TEXTO PEQUEÑO */
+
+.ticket-small {
+    font-size: 0.75rem;
+    color: #aaa;
+    text-align: center;
+}
+
+/* ================= EXPERIENCE SECTION ================= */
+
+.experience-section {
+    background: #0d0d0d;
+    padding: 70px 10%;   /* 👈 antes seguramente más grande */
+    text-align: center;
+}
+
+.experience-title {
+    font-size: 2.3rem;
+    margin-bottom: 50px;
+    color: #00ffff;
+    letter-spacing: 2px;
+}
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.experience-card {
+    background: #1c1c1c;
+    padding: 40px 30px;
+    border-radius: 20px;
+    transition: 0.4s ease;
+}
+
+.experience-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 40px rgba(0,255,255,0.2);
+}
+
+.experience-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.experience-card h3 {
+    margin-bottom: 15px;
+    color: white;
+}
+
+.experience-card p {
+    color: #aaa;
+    font-size: 0.95rem;
+}
+
+/* ================= AFTERMOVIE ================= */
+
+/* ================= AFTERMOVIE VIDEO ================= */
+
+.aftermovie-section {
+    position: relative;
+    height: 80vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aftermovie-video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.aftermovie-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.6)
+    );
+}
+
+.aftermovie-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+}
+
+.aftermovie-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+}
+
+/* ================= AFTERMOVIE VIDEO ================= */
+
+.aftermovie-section {
+    position: relative;
+    height: 80vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aftermovie-video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.aftermovie-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.6)
+    );
+}
+
+.aftermovie-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+}
+
+.aftermovie-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+}
+
+/* ================= COUNTDOWN ================= */
+
+.countdown-container {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+}
+
+.countdown-item {
+    text-align: center;
+}
+
+.countdown-item span {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #00ffff;
+}
+
+.countdown-item p {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* ================= SPONSORS ================= */
+
+/* ================= SPONSORS ================= */
+
+.sponsors-section {
+    background: #111;
+    padding: 35px 8%; /* antes 80px */
+    text-align: center;
+}
+
+.sponsors-main-title {
+    font-size: 2.3rem;
+    margin-bottom: 40px; /* reducido */
+    color: #00ffff;
+    letter-spacing: 2px;
+}
+
+.sponsor-category {
+    margin-bottom: 40px; /* reducido */
+}
+
+.sponsor-category h3 {
+    margin-bottom: 20px; /* reducido */
+    font-size: 1.2rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.sponsor-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 35px; /* antes 50px */
+    min-height: 70px;
+}
+
+/* 🔥 CLAVE PARA IGUALAR TAMAÑO */
+.sponsor-row img {
+    height: 45px;       /* todos misma altura */
+    width: auto;        /* mantiene proporción */
+    object-fit: contain;
+    opacity: 0.8;
+    transition: 0.3s ease;
+}
+
+.sponsor-row img:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
