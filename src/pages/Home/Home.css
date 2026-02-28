@@ -22,17 +22,95 @@ body {
 /* =========================================
    1. CABECERA (HEADER)
    ========================================= */
+
+   /* ESTILO GENERAL DE OPCIONES NAV */
+
+/* HEADER BASE */
+
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* Aumentamos el padding vertical de 20px a 35px para hacerla más alta */
-    padding: 35px 50px;
-    background-color: rgba(0, 0, 0, 0.8);
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
-    z-index: 10;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    z-index: 1000;
+}
+
+/* NAV CON ESPACIO */
+
+.header nav {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* 🔥 separación horizontal */
+}
+
+/* OPCIONES NAV */
+
+.nav-item {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+/* HOVER */
+
+.nav-item:hover {
+    color: #00ffff;
+}
+
+/* DROPDOWN */
+
+.nav-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    background: #111;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 180px;
+}
+
+.dropdown-item {
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dropdown-item:hover {
+    color: #00ffff;
+}
+
+/* BOTÓN LOGIN */
+
+.login-btn {
+    padding: 10px 25px;
+    border-radius: 30px;
+    border: 2px solid #00ffff;
+    background: transparent;
+    color: #00ffff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #00ffff;
+    color: black;
 }
 
 .logo img {
@@ -40,16 +118,6 @@ body {
     /*width: auto; /* Mantiene la proporción para que no se achate */
     max-width: 200px; /* Límite máximo de ancho por si la imagen es muy alargada */
     display: block; /* Quita un pequeño margen invisible que traen las imágenes por defecto */
-}
-
-.header nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 25px;
-    /* Hacemos los enlaces un poco más grandes (de 14px a 18px) */
-    font-size: 18px;
-    text-transform: uppercase;
-    transition: color 0.3s;
 }
 
 .login-btn {

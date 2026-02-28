@@ -88,37 +88,53 @@ useEffect(() => {
         <div className="app-container">
 
             <header className="header">
-                <div className="logo">
+                <div className="logo" onClick={() => navigate("/")}>
                     <img src="/logoPI.png" alt="Logo Subsonic" />
                 </div>
 
                 <nav>
+
+                    {/* ENTRADAS */}
                     <div className="nav-dropdown">
-                        <a href="#Entradas" onClick={toggleEntradas}>
-                            Entradas {isEntradasOpen ? '▴' : '▾'}
-                        </a>
-                        {isEntradasOpen && (
-                            <div className="dropdown-menu">
-                                <a href="#EntradasNormales">Entradas Normales</a>
-                                <a href="#EntradasVip">Entradas VIP</a>
-                            </div>
-                        )}
+                        {/* ENTRADAS */}
+                    <span
+                        className="nav-item"
+                        onClick={() => navigate("/entradas")}
+                    >
+                        Entradas
+                    </span>
                     </div>
 
-                    <a href="#Cartel">Cartel</a>
-                    <a href="#servicios">Servicios</a>
+                    {/* CARTEL */}
+                    <span
+                        className="nav-item"
+                        onClick={() => navigate("/cartel")}
+                    >
+                        Cartel
+                    </span>
 
+                    {/* SERVICIOS */}
+                    <span className="nav-item">
+                        Servicios
+                    </span>
+
+                    {/* INFO */}
                     <div className="nav-dropdown">
-                        <a href="#Info" onClick={toggleInfo}>
+                        <span
+                            className="nav-item"
+                            onClick={toggleInfo}
+                        >
                             Info {isInfoOpen ? '▴' : '▾'}
-                        </a>
+                        </span>
+
                         {isInfoOpen && (
                             <div className="dropdown-menu">
-                                <a href="#politica">Política y Privacidad</a>
-                                <a href="#faq">Preguntas Frecuentes</a>
+                                <span className="dropdown-item">Política y Privacidad</span>
+                                <span className="dropdown-item">Preguntas Frecuentes</span>
                             </div>
                         )}
                     </div>
+
                 </nav>
 
                 <button
@@ -136,10 +152,10 @@ useEffect(() => {
                     className="hero-video"
                     src="/videos/videoPrincipal.mp4"
                     autoPlay
-    muted
-    loop
-    playsInline
-    preload="auto"
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
                 />
 
                 <div className="hero-overlay"></div>
