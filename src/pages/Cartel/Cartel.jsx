@@ -1,24 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import "./Cartel.css";
+import Header from "../../components/Header";
 
 function Cartel() {
-
-    const navigate = useNavigate();
-
-    const [isInfoOpen, setIsInfoOpen] = useState(false);
-    const [isEntradasOpen, setIsEntradasOpen] = useState(false);
+ 
     const [search, setSearch] = useState("");
-
-    const toggleInfo = (e) => {
-        e.preventDefault();
-        setIsInfoOpen(!isInfoOpen);
-    };
-
-    const toggleEntradas = (e) => {
-        e.preventDefault();
-        setIsEntradasOpen(!isEntradasOpen);
-    };
+ 
 
     const artistas = [
         { id: 1, nombre: "Bad Bunny", dia: "Viernes 17 Julio", img: "/artists/badbunny.avif" },
@@ -39,40 +27,7 @@ function Cartel() {
     return (
         <div className="cartel-page">
 
-            <header className="header">
-                <div className="logo" onClick={() => navigate("/")}>
-                    <img src="/logoPI.png" alt="Logo Subsonic" />
-                </div>
-
-                <nav>
-                    <div className="nav-dropdown">
-                        <span className="nav-item" onClick={toggleEntradas}>
-                            Entradas {isEntradasOpen ? '▴' : '▾'}
-                        </span>
-                    </div>
-
-                    <span className="nav-item" onClick={() => navigate("/cartel")}>
-                        Cartel
-                    </span>
-
-                    <span className="nav-item">
-                        Servicios
-                    </span>
-
-                    <div className="nav-dropdown">
-                        <span className="nav-item" onClick={toggleInfo}>
-                            Info {isInfoOpen ? '▴' : '▾'}
-                        </span>
-                    </div>
-                </nav>
-
-                <button
-                    className="login-btn"
-                    onClick={() => navigate('/login')}
-                >
-                    Acceder / Registro
-                </button>
-            </header>
+           <Header />
 
             {/* IMAGEN DEL CARTEL */}
             <section className="cartel-image-section">

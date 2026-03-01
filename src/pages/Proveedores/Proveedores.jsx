@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Proveedores.css';
+import Header from "../../components/Header";
+
 
 function Proveedores() {
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         nombre: '',
         empresa: '',
@@ -37,30 +37,7 @@ function Proveedores() {
 
     return (
         <div className="proveedores-container">
-            <header className="header">
-                <div className="logo" onClick={() => navigate("/")}>
-                    <img src="/logoPI.png" alt="Logo Subsonic" />
-                </div>
-
-                <nav>
-                    <span className="nav-item" onClick={() => navigate("/entradas")}>
-                        Entradas
-                    </span>
-                    <span className="nav-item" onClick={() => navigate("/cartel")}>
-                        Cartel
-                    </span>
-                    <span className="nav-item" onClick={() => navigate("/servicios")}>
-                        Servicios
-                    </span>
-                    <span className="nav-item">
-                        Info
-                    </span>
-                </nav>
-
-                <button className="login-btn" onClick={() => navigate('/login')}>
-                    Acceder / Registro
-                </button>
-            </header>
+         <Header />
 
             <main className="proveedores-main">
                 <section className="proveedores-hero">

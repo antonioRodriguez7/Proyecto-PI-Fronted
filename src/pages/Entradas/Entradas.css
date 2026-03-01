@@ -11,7 +11,7 @@
     margin-top: 100px; /* altura del header */
     position: relative;
     width: 100%;
-    height: calc(100vh - 100px); /* 🔥 ocupa toda la pantalla menos el header */
+    height: calc(100vh - 100px); 
     overflow: hidden;
 }
 

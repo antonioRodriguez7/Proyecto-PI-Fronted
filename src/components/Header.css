@@ -1,0 +1,118 @@
+/* ===== HEADER (layout principal) ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* Grid: izquierda (logo) - centro (nav) - derecha (botón) */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding: 14px 22px;
+  min-height: 72px;
+}
+
+/* ===== IZQUIERDA: LOGO ===== */
+.logo {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo img {
+  height: 44px;
+  width: auto;
+}
+
+/* ===== CENTRO: NAV ===== */
+.header nav {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.nav-item {
+  cursor: pointer;
+  opacity: 0.9;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  user-select: none;
+}
+
+.nav-item:hover {
+  opacity: 1;
+}
+
+/* ===== DERECHA: BOTÓN LOGIN ===== */
+.login-btn {
+  justify-self: end;
+
+  border: 1px solid #20e6ff;
+  background: transparent;
+  color: #20e6ff;
+
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.login-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* ===== DROPDOWN INFO ===== */
+.nav-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+
+  padding: 8px;
+  min-width: 220px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  cursor: pointer;
+  opacity: 0.9;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.dropdown-item:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Opcional: para que la flecha quede alineada */
+.nav-dropdown .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

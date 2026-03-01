@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Entradas.css";
+import Header from "../../components/Header";
 
 function Entradas() {
 
-    const navigate = useNavigate();
-    const [isInfoOpen, setIsInfoOpen] = useState(false);
-
-    const toggleInfo = () => {
-        setIsInfoOpen(!isInfoOpen);
-    };
+  
 
     const [cantidades, setCantidades] = useState({
         1: 0,
@@ -61,45 +56,7 @@ function Entradas() {
         <div className="entradas-page">
 
             {/* ================= HEADER ================= */}
-            <header className="header">
-                <div className="logo" onClick={() => navigate("/")}>
-                    <img src="/logoPI.png" alt="Logo Subsonic" />
-                </div>
-
-                <nav>
-                    <span className="nav-item" onClick={() => navigate("/entradas")}>
-                        Entradas
-                    </span>
-
-                    <span className="nav-item" onClick={() => navigate("/cartel")}>
-                        Cartel
-                    </span>
-
-                    <span className="nav-item">
-                        Servicios
-                    </span>
-
-                    <div className="nav-dropdown">
-                        <span className="nav-item" onClick={toggleInfo}>
-                            Info {isInfoOpen ? '▴' : '▾'}
-                        </span>
-
-                        {isInfoOpen && (
-                            <div className="dropdown-menu">
-                                <span className="dropdown-item">Política y Privacidad</span>
-                                <span className="dropdown-item">Preguntas Frecuentes</span>
-                            </div>
-                        )}
-                    </div>
-                </nav>
-
-                <button
-                    className="login-btn"
-                    onClick={() => navigate('/login')}
-                >
-                    Acceder / Registro
-                </button>
-            </header>
+             <Header />
 
             {/* ================= HERO CON IMG REAL ================= */}
             <section className="entradas-hero">
