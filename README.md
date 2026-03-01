@@ -17,15 +17,15 @@ Proyecto de la asignatura PI (Programación en Internet)
   <summary><h2 style="display: inline-block"> 📋 Contenido</h2></summary>
   <ol>
     <li>
-      <a href="#about-the-project">Acerca del Proyecto</a>
+      <a href="#%EF%B8%8F-acerca-del-proyecto">Acerca del Proyecto</a>
     </li>
     <li>
-      <a href="#getting-started">Primeros pasos</a>
+      <a href="#%EF%B8%8F-primeros-pasos">Primeros pasos</a>
     </li>
-    <li><a href="#usage">Ejemplos de uso</a></li>
-    <li><a href="#contributors">Miembros</a></li>
-    <li><a href="#licencia">Licencia</a></li>
-    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#-c%C3%B3mo-se-usa-la-api">Ejemplos de uso</a></li>
+    <li><a href="#%E2%80%8D%E2%80%8D%E2%80%8D-miembros-del-grupo-3-lab-2">Miembros</a></li>
+    <li><a href="#%EF%B8%8F-licencia">Licencia</a></li>
+    <li><a href="#-contacto">Contacto</a></li>
   </ol>
 </details>
 
