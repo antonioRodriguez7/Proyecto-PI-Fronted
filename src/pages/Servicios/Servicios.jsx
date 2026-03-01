@@ -1,36 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Servicios.css';
+import Header from "../../components/Header";
+
 
 function Servicios() {
-    const navigate = useNavigate();
 
     return (
         <div className="servicios-container">
-            <header className="header">
-                <div className="logo" onClick={() => navigate("/")}>
-                    <img src="/logoPI.png" alt="Logo Subsonic" />
-                </div>
-
-                <nav>
-                    <span className="nav-item" onClick={() => navigate("/entradas")}>
-                        Entradas
-                    </span>
-                    <span className="nav-item" onClick={() => navigate("/cartel")}>
-                        Cartel
-                    </span>
-                    <span className="nav-item active" onClick={() => navigate("/servicios")}>
-                        Servicios
-                    </span>
-                    <span className="nav-item">
-                        Info
-                    </span>
-                </nav>
-
-                <button className="login-btn" onClick={() => navigate('/login')}>
-                    Acceder / Registro
-                </button>
-            </header>
+           <Header />
 
             <main className="servicios-main">
                 <section className="servicios-hero">

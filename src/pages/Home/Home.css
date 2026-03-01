@@ -27,7 +27,7 @@ body {
 
 /* HEADER BASE */
 
-.header {
+/* .header {
     position: fixed;
     top: 0;
     width: 100%;
@@ -42,11 +42,11 @@ body {
 
 /* NAV CON ESPACIO */
 
-.header nav {
+/* .header nav {
     display: flex;
     align-items: center;
-    gap: 40px; /* 🔥 separación horizontal */
-}
+    gap: 40px; 
+} */ */
 
 /* OPCIONES NAV */
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import Header from "../../components/Header";
 function Home() {
 
     const navigate = useNavigate();
@@ -53,7 +54,6 @@ useEffect(() => {
         setIsEntradasOpen(!isEntradasOpen);
     };
 
-    // 🔥 AQUÍ ESTÁ CORREGIDO
     const entradas = [
         {
             id: 1,
@@ -87,66 +87,7 @@ useEffect(() => {
     return (
         <div className="app-container">
 
-            <header className="header">
-                <div className="logo" onClick={() => navigate("/")}>
-                    <img src="/logoPI.png" alt="Logo Subsonic" />
-                </div>
-
-                <nav>
-
-                    {/* ENTRADAS */}
-                    <div className="nav-dropdown">
-                        {/* ENTRADAS */}
-                    <span
-                        className="nav-item"
-                        onClick={() => navigate("/entradas")}
-                    >
-                        Entradas
-                    </span>
-                    </div>
-
-                    {/* CARTEL */}
-                    <span
-                        className="nav-item"
-                        onClick={() => navigate("/cartel")}
-                    >
-                        Cartel
-                    </span>
-
-                    {/* SERVICIOS */}
-                    <span
-                        className="nav-item"
-                        onClick={() => navigate("/servicios")}
-                    >
-                        Servicios
-                    </span>
-
-                    {/* INFO */}
-                    <div className="nav-dropdown">
-                        <span
-                            className="nav-item"
-                            onClick={toggleInfo}
-                        >
-                            Info {isInfoOpen ? '▴' : '▾'}
-                        </span>
-
-                        {isInfoOpen && (
-                            <div className="dropdown-menu">
-                                <span className="dropdown-item">Política y Privacidad</span>
-                                <span className="dropdown-item">Preguntas Frecuentes</span>
-                            </div>
-                        )}
-                    </div>
-
-                </nav>
-
-                <button
-                    className="login-btn"
-                    onClick={() => navigate('/login')}
-                >
-                    Acceder / Registro
-                </button>
-            </header>
+           <Header />
 
             <main>
 

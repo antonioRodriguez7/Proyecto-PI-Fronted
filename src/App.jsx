@@ -11,6 +11,7 @@ import Cartel from "./pages/Cartel/Cartel";
 import Entradas from "./pages/Entradas/Entradas";
 import Servicios from "./pages/Servicios/Servicios";
 import Proveedores from "./pages/Proveedores/Proveedores";
+import PreguntasFrecuentes from "./pages/FAQS/PreguntasFrecuentes";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/entradas" element={<Entradas />} />
         <Route path="/servicios" element={<Servicios />} />
         <Route path="/proveedores" element={<Proveedores />} />
+        <Route path="/faq" element={<PreguntasFrecuentes />} />
       </Routes>
     </>
   );
