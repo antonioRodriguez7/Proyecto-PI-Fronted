@@ -1,0 +1,274 @@
+/* ================= PAGE ================= */
+
+.entradas-page {
+    background: #0e0e0e;
+    min-height: 100vh;
+}
+
+/* ================= HERO ================= */
+
+.entradas-hero {
+    margin-top: 100px; /* altura del header */
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 100px); /* 🔥 ocupa toda la pantalla menos el header */
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.6);
+    padding: 50px 70px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.hero-text h1 {
+    color: #00ffff;
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.hero-text p {
+    color: white;
+    font-size: 1.2rem;
+}
+
+/* ================= TICKETS SECTION ================= */
+
+.tickets-section {
+    padding: 100px 10%;
+    background: linear-gradient(180deg, #101010, #1a1a1a);
+    text-align: center;
+}
+
+.tickets-title {
+    font-size: 2.5rem;
+    color: #00ffff;
+    margin-bottom: 60px;
+}
+
+.tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+/* ================= CARD ================= */
+
+.ticket-card {
+    background: #1f1f1f;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.4s ease;
+    position: relative;
+}
+
+.ticket-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+}
+
+/* IMAGEN CARD */
+
+.ticket-image-wrapper {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.ticket-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* CONTENIDO */
+
+.ticket-content {
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.ticket-card h3 {
+    font-size: 1.6rem;
+    color: white;
+    text-align: center;
+}
+
+.ticket-desc {
+    font-size: 0.9rem;
+    color: #ccc;
+    text-align: center;
+}
+
+.ticket-price {
+    font-size: 1.4rem;
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+/* BADGES */
+
+.ticket-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+    z-index: 2;
+}
+
+.ticket-badge.popular {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+}
+
+.ticket-badge.limitado {
+    background: linear-gradient(45deg, #7b2ff7, #f107a3);
+}
+
+.ticket-badge.nuevo {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed);
+}
+
+/* SELECT */
+
+.ticket-select {
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background: #111;
+    color: white;
+    cursor: pointer;
+}
+
+/* BOTON SOLD */
+
+.ticket-btn.sold {
+    background: transparent;
+    border: 2px solid #888;
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* BOTON GLOBAL */
+
+.buy-global-btn {
+    margin-top: 60px;
+    padding: 18px 50px;
+    border-radius: 50px;
+    border: none;
+    background: #00ffff;
+    color: black;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.buy-global-btn:hover {
+    background: #00cccc;
+    transform: scale(1.05);
+}
+
+/* =========================================
+   4. FOOTER
+   ========================================= */
+.footer {
+    margin-top: auto;
+    padding: 40px 50px;
+    background-color: #0a0a0a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #333;
+}
+
+/* Usamos flex: 1 en las tres cajas para que "Proveedores" quede 100% centrado */
+.footer-left {
+    flex: 1;
+    display: flex;
+    gap: 15px; /* Separación entre los círculos */
+}
+
+/* Estilo para los círculos de Redes Sociales */
+.circle-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #777;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #777;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.circle-icon:hover {
+    border-color: #00e5ff; /* Se iluminan en cian al pasar el ratón */
+    color: #00e5ff;
+}
+
+.footer-center {
+    flex: 1;
+    text-align: center;
+}
+
+.proveedores-link {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.proveedores-link:hover {
+    color: #00e5ff;
+}
+
+.footer-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Empuja el botón a la derecha del todo */
+}
+
+/* Estilo para la caja de Spotify */
+.spotify-placeholder {
+    padding: 12px 25px;
+    background-color: transparent;
+    border: 2px solid #1db954; /* Verde característico de Spotify */
+    border-radius: 25px;
+    color: #1db954;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.spotify-placeholder:hover {
+    background-color: #1db954;
+    color: #000;
+}
