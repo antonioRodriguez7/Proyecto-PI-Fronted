@@ -44,8 +44,14 @@ function Login() {
 
                     <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '13px' }}>
                         <span
+                            style={{ color: '#888', cursor: 'pointer', display: 'block', marginBottom: '8px' }}
+                            onClick={() => navigate('/perfil-admin')}
+                        >
+                            [Prueba] Entrar como Admin
+                        </span>
+                        <span
                             style={{ color: '#888', cursor: 'pointer' }}
-                            onClick={() => navigate('/admin')}
+                            onClick={() => navigate('/perfil-proveedor')}
                         >
                             [Prueba] Entrar como Proveedor
                         </span>
