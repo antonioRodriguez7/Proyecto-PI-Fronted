@@ -114,7 +114,10 @@ useEffect(() => {
                     </span>
 
                     {/* SERVICIOS */}
-                    <span className="nav-item">
+                    <span
+                        className="nav-item"
+                        onClick={() => navigate("/servicios")}
+                    >
                         Servicios
                     </span>
 
@@ -318,8 +321,11 @@ useEffect(() => {
                 </div>
 
                 <div className="footer-center">
-                    <a href="#proveedores" className="proveedores-link">
-                        Acceso Proveedores
+                    <a href="#proveedores" className="proveedores-link" onClick={(e) => {
+                        e.preventDefault();
+                        navigate('/proveedores');
+                    }}>
+                        ¿Quieres ser proveedor?
                     </a>
                 </div>
 
