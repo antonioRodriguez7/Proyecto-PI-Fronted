@@ -12,6 +12,7 @@ import Entradas from "./pages/Entradas/Entradas";
 import Servicios from "./pages/Servicios/Servicios";
 import Proveedores from "./pages/Proveedores/Proveedores";
 import PreguntasFrecuentes from "./pages/FAQS/PreguntasFrecuentes";
+import PoliticaPrivacidad from "./pages/PoliticaPrivacidad/PoliticaPrivacidad";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/servicios" element={<Servicios />} />
         <Route path="/proveedores" element={<Proveedores />} />
         <Route path="/faq" element={<PreguntasFrecuentes />} />
+          <Route path="/politica" element={<PoliticaPrivacidad />} />
       </Routes>
     </>
   );
