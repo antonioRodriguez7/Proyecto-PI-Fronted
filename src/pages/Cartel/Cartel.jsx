@@ -1,25 +1,21 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { FaSpotify } from "react-icons/fa";
 import "./Cartel.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { getArtistas } from "../../services/api";
 
 function Cartel() {
- 
-    const [search, setSearch] = useState("");
- 
 
-    const artistas = [
-        { id: 1, nombre: "Bad Bunny", dia: "Viernes 17 Julio", img: "/artists/badbunny.avif" },
-        { id: 2, nombre: "Rosalía", dia: "Viernes 17 Julio", img: "/artists/rosalia.jpg" },
-        { id: 3, nombre: "Martín Garrix", dia: "Viernes 17 Julio", img: "/artists/martingarrix.jpg" },
-        { id: 4, nombre: "David Guetta", dia: "Sábado 18 Julio", img: "/artists/davidguetta.jpeg" },
-        { id: 5, nombre: "Karol G", dia: "Sábado 18 Julio", img: "/artists/karolg.jpg" },
-        { id: 6, nombre: "Feid", dia: "Sábado 18 Julio", img: "/artists/feid.webp" },
-        { id: 7, nombre: "J Balvin", dia: "Domingo 19 Julio", img: "/artists/jbalvin.jpg" },
-        { id: 8, nombre: "Rauw Alejandro", dia: "Domingo 19 Julio", img: "/artists/rauw.webp" },
-        { id: 9, nombre: "Amelie Lens", dia: "Domingo 19 Julio", img: "/artists/amelielens.webp" }
-    ];
+    const [search, setSearch] = useState("");
+
+    const [artistas, setArtistas] = useState([]);
+
+    useEffect(() => {
+        getArtistas().then(data => {
+            setArtistas(data);
+        });
+    }, []);
 
     const artistasFiltrados = artistas.filter((artista) =>
         artista.nombre.toLowerCase().includes(search.toLowerCase())
@@ -28,7 +24,7 @@ function Cartel() {
     return (
         <div className="cartel-page">
 
-           <Header />
+            <Header />
 
             {/* IMAGEN DEL CARTEL */}
             <section className="cartel-image-section">
@@ -53,8 +49,11 @@ function Cartel() {
             {/* GRID ARTISTAS */}
             <section className="artists-section">
                 <div className="artists-grid">
+
                     {artistasFiltrados.length > 0 ? (
+
                         artistasFiltrados.map((artista) => (
+
                             <div className="artist-card" key={artista.id}>
 
                                 <div className="artist-img-wrapper">
@@ -62,25 +61,32 @@ function Cartel() {
                                 </div>
 
                                 <div className="artist-content">
+
                                     <h3>{artista.nombre}</h3>
+
                                     <p>{artista.dia}</p>
 
-                                    <div className="artist-socials">
-                                        <span>🎵</span>
-                                        <span>📸</span>
+                                   <div className="artist-socials">
+                                        <FaSpotify className="spotify-icon" />
                                     </div>
+
                                 </div>
 
                             </div>
+
                         ))
+
                     ) : (
-                        <p className="no-results">No se encontró ningún artista</p>
+
+                        <p className="no-results">
+                            No se encontró ningún artista
+                        </p>
+
                     )}
 
                 </div>
             </section>
 
-             {/* FOOTER */}
             <Footer />
 
         </div>

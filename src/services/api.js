@@ -1,0 +1,11 @@
+/* Importamos ambos backends, el falso y el real, y luego exportamos el que queremos usar */
+import * as fake from "./fakeBackend";
+import * as real from "./realBackend";
+
+const usarBackendFalso = true;
+
+const backend = usarBackendFalso ? fake : real;
+
+export const getEntradas = backend.getEntradas;
+
+export const getArtistas = backend.getArtistas;

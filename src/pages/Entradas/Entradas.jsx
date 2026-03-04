@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Entradas.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { getEntradas } from "../../services/api";
 
 function Entradas() {
-
-  
+    /* Esto crea un estado en React para guardar las entradas */
+    const [entradas, setEntradas] = useState([]);
 
     const [cantidades, setCantidades] = useState({
         1: 0,
         2: 0,
         3: 0
     });
+    /* Esto cuando cargar la pagina llama a getEntradas(), recibe los datos y los guarda en el estado */
+    useEffect(() => {
+        getEntradas().then(data => {
+            setEntradas(data);
+        });
+    }, []);
 
+    /* Esto es una funcion que actualiza el numero de entradas seleccionadas para cada tipo de ticket*/
     const handleCantidad = (id, value) => {
         setCantidades({
             ...cantidades,
@@ -20,38 +28,6 @@ function Entradas() {
         });
     };
 
-    const entradas = [
-        {
-            id: 1,
-            nombre: "ABONO GENERAL",
-            precio: "72,50€",
-            descripcion: "Acceso a todos los escenarios durante los 3 días del festival.",
-            etiqueta: "MÁS VENDIDO",
-            tipoEtiqueta: "popular",
-            estado: "disponible",
-            img: "/imgsTickets/ticketNormal.jpg"
-        },
-        {
-            id: 2,
-            nombre: "ABONO VIP",
-            precio: "155€",
-            descripcion: "Zona VIP exclusiva, acceso prioritario y barra privada.",
-            etiqueta: "MUY LIMITADO",
-            tipoEtiqueta: "limitado",
-            estado: "disponible",
-            img: "/imgsTickets/ticketVIP.jpg"
-        },
-        {
-            id: 3,
-            nombre: "DREAM VIP",
-            precio: "300€",
-            descripcion: "Experiencia premium completa, backstage y catering exclusivo.",
-            etiqueta: "NOVEDAD",
-            tipoEtiqueta: "nuevo",
-            estado: "agotado",
-            img: "/imgsTickets/ticketDreamVIP.jpg"
-        }
-    ];
 
     return (
         <div className="entradas-page">
