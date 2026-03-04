@@ -242,11 +242,11 @@
     }
 }
 
-/* Estilos para la sección de ESPACIOS */
-.espacios-container {
+    .espacios-container {
     display: flex;
-    height: calc(100vh - 100px);
-}
+    flex: 1;          /* ocupa el espacio disponible en admin-main */
+    min-height: 0;    /* CLAVE para que el overflow funcione bien */
+    }
 
 .espacios-filters {
     width: 280px;
@@ -588,4 +588,13 @@
 .btn-contact:hover {
     background-color: #b01370;
     box-shadow: 0 0 15px rgba(223, 24, 138, 0.4);
+}
+
+.admin-main {
+  min-height: 100vh;
+}
+
+
+.admin-main > .footer {
+  margin-top: auto;
 }

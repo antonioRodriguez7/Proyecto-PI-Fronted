@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Perfil_Admin.css';
+import Footer from "../../components/Footer";
+
+
 
 function Perfil_Admin() {
 
@@ -441,10 +444,10 @@ function Perfil_Admin() {
                                         </div>
                                         <h3>{espacio.nombre}</h3>
                                         <p className="espacio-tipo">{espacio.tipo}</p>
-                                        <p className="espacio-detalle">📅 {espacio.evento}</p>
-                                        <p className="espacio-detalle">📍 {espacio.lugar}</p>
-                                        <p className="espacio-detalle">📏 {espacio.tamano}</p>
-                                        <p className="espacio-precio">💰 {espacio.precio}</p>
+                                        <p className="espacio-detalle"> {espacio.evento}</p>
+                                        <p className="espacio-detalle"> {espacio.lugar}</p>
+                                        <p className="espacio-detalle"> {espacio.tamano}</p>
+                                        <p className="espacio-precio"> {espacio.precio}</p>
                                     </div>
                                 ))}
                             </div>
@@ -501,8 +504,10 @@ function Perfil_Admin() {
                         </div>
                     </div>
                 )}
-
+            <Footer />
             </main>
+
+             
         </div>
     );
 }

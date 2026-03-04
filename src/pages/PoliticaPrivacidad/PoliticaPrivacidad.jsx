@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../../components/Header'; // Ajusta la ruta según tu carpeta
 import './PoliticaPrivacidad.css';
+import Footer from "../../components/Footer";
 
 function PoliticaPrivacidad() {
     return (
@@ -40,6 +41,8 @@ function PoliticaPrivacidad() {
                     </div>
                 </section>
             </main>
+
+              <Footer />
         </div>
     );
 }
