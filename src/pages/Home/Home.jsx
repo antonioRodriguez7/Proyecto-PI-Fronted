@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { getEntradas } from "../../services/api";
 function Home() {
 
     const navigate = useNavigate();
@@ -32,18 +33,6 @@ useEffect(() => {
 
     return () => clearInterval(timer);
 }, []);
-    const artistas = [
-        { id: 1, nombre: 'Bad Gyal', fecha: '17 Julio 2026', genero: 'Urbano', dia: 'Viernes' },
-        { id: 2, nombre: 'Quevedo', fecha: '18 Julio 2026', genero: 'Urbano', dia: 'Sábado' },
-        { id: 3, nombre: 'Bizarrap', fecha: '19 Julio 2026', genero: 'Electrónica', dia: 'Viernes' },
-        { id: 4, nombre: 'Rosalía', fecha: '20 Julio 2026', genero: 'Urbano', dia: 'Sábado' },
-        { id: 5, nombre: 'Amelie Lens', fecha: '17 Julio 2026', genero: 'Electrónica', dia: 'Viernes' },
-    ];
-
-    const artistasFiltrados = artistas.filter(artista => {
-        if (filtroActivo === 'Todos') return true;
-        return artista.dia === filtroActivo || artista.genero === filtroActivo;
-    });
 
     const toggleInfo = (e) => {
         e.preventDefault();
@@ -55,35 +44,13 @@ useEffect(() => {
         setIsEntradasOpen(!isEntradasOpen);
     };
 
-    const entradas = [
-        {
-            id: 1,
-            nombre: "ABONO GENERAL",
-            precio: "72,50€",
-            etiqueta: "MÁS VENDIDO",
-            tipoEtiqueta: "popular",
-            estado: "disponible",
-            img: "/imgsTickets/ticketNormal.jpg"
-        },
-        {
-            id: 2,
-            nombre: "ABONO VIP",
-            precio: "155€",
-            etiqueta: "MUY LIMITADO",
-            tipoEtiqueta: "limitado",
-            estado: "disponible",
-            img: "/imgsTickets/ticketVIP.jpg"
-        },
-        {
-            id: 3,
-            nombre: "DREAM VIP",
-            precio: "300€",
-            etiqueta: "NOVEDAD",
-            tipoEtiqueta: "nuevo",
-            estado: "agotado",
-            img: "/imgsTickets/ticketDreamVIP.jpg"
-        }
-    ];
+    const [entradas, setEntradas] = useState([]);
+
+    useEffect(() => {
+    getEntradas().then(data => {
+        setEntradas(data);
+    });
+}, []);
 
     return (
         <div className="app-container">
