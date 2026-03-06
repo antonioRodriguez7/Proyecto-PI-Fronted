@@ -75,12 +75,10 @@ const artistas = [
     { id: 28, nombre: "J Balvin", dia: "Domingo 19 Julio", img: "/artists/jbalvin.jpg" },
     { id: 29, nombre: "Amelie Lens", dia: "Domingo 19 Julio", img: "/artists/amelielens.webp" },
     { id: 30, nombre: "Rauw Alejandro", dia: "Domingo 19 Julio", img: "/artists/rauw.webp" },
-    { id: 31, nombre: "Bizarrap", dia: "Domingo 19 Julio", img: "/artists/bizarrap.jpg" },
     { id: 32, nombre: "Eladio Carrión", dia: "Domingo 19 Julio", img: "/artists/eladio.jpg" },
     { id: 33, nombre: "Steve Aoki", dia: "Domingo 19 Julio", img: "/artists/aoki.jpg" },
     { id: 34, nombre: "Central Cee", dia: "Domingo 19 Julio", img: "/artists/centralcee.jpg" },
     { id: 35, nombre: "Bad Gyal", dia: "Domingo 19 Julio", img: "/artists/badgyal.jpg" },
-    { id: 36, nombre: "Saiko", dia: "Domingo 19 Julio", img: "/artists/saiko.jpg" },
     { id: 37, nombre: "Duki", dia: "Domingo 19 Julio", img: "/artists/duki.jpg" },
     { id: 38, nombre: "Solomun", dia: "Domingo 19 Julio", img: "/artists/solomun.jpg" },
     { id: 39, nombre: "Alesso", dia: "Domingo 19 Julio", img: "/artists/alesso.jpg" }
