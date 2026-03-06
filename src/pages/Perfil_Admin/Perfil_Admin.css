@@ -125,7 +125,7 @@
     border: 1px solid #333;
     border-radius: 15px;
     padding: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .form-title {
@@ -242,11 +242,13 @@
     }
 }
 
-    .espacios-container {
+.espacios-container {
     display: flex;
-    flex: 1;          /* ocupa el espacio disponible en admin-main */
-    min-height: 0;    /* CLAVE para que el overflow funcione bien */
-    }
+    flex: 1;
+    /* ocupa el espacio disponible en admin-main */
+    min-height: 0;
+    /* CLAVE para que el overflow funcione bien */
+}
 
 .espacios-filters {
     width: 280px;
@@ -379,10 +381,7 @@
     color: #ff5555;
 }
 
-.espacio-status.casi-completo {
-    background-color: rgba(255, 165, 0, 0.2);
-    color: #ffa500;
-}
+
 
 .espacio-card h3 {
     color: #fff;
@@ -522,10 +521,7 @@
     color: #ff5555;
 }
 
-.status-badge.casi-completo {
-    background-color: rgba(255, 165, 0, 0.2);
-    color: #ffa500;
-}
+
 
 .services-list {
     list-style: none;
@@ -591,10 +587,24 @@
 }
 
 .admin-main {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 
-.admin-main > .footer {
-  margin-top: auto;
+.admin-main>.footer {
+    margin-top: auto;
+}
+
+/* --- SECCIÓN NEGOCIO ASIGNADO (modal) --- */
+.negocio-section {
+    border: 1px solid #df188a !important;
+    background-color: rgba(223, 24, 138, 0.05) !important;
+}
+
+.negocio-section h4 {
+    color: #df188a !important;
+}
+
+.negocio-section p {
+    color: #ccc !important;
 }
