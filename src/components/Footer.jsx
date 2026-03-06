@@ -1,11 +1,7 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import "./Footer.css";
 
 function Footer() {
-
-  const navigate = useNavigate();
-
   return (
     <footer className="footer">
       <div className="footer-left">
@@ -15,16 +11,7 @@ function Footer() {
       </div>
 
       <div className="footer-center">
-        <a
-          href="#proveedores"
-          className="proveedores-link"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("/proveedores");
-          }}
-        >
-          ¿Quieres ser proveedor?
-        </a>
+        <span className="festival-name">SUBSONIC FESTIVAL</span>
       </div>
 
       <div className="footer-right">
