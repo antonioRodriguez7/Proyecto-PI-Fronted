@@ -19,7 +19,8 @@
     height: 35px;
 }
 
-.btn-atras, .btn-logout-nav {
+.btn-atras,
+.btn-logout-nav {
     background: transparent;
     border: 1px solid #555;
     color: #ccc;
@@ -29,8 +30,15 @@
     transition: all 0.3s;
 }
 
-.btn-atras:hover { border-color: #00e5ff; color: #00e5ff; }
-.btn-logout-nav:hover { border-color: #df188a; color: #df188a; }
+.btn-atras:hover {
+    border-color: #00e5ff;
+    color: #00e5ff;
+}
+
+.btn-logout-nav:hover {
+    border-color: #df188a;
+    color: #df188a;
+}
 
 /* Contenedor principal */
 .perfil-container {
@@ -39,7 +47,7 @@
     background-color: #1a1a1a;
     border-radius: 15px;
     padding: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid #333;
 }
 
@@ -75,7 +83,15 @@
 
 .perfil-username {
     font-size: 24px;
-    margin-bottom: 15px;
+    margin-bottom: 6px;
+}
+
+.perfil-at-username {
+    color: #00e5ff;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 14px;
+    opacity: 0.75;
 }
 
 .perfil-desc-text {
@@ -188,4 +204,42 @@
 .producto-card.empty:hover {
     border-color: #ccc;
     color: #ccc;
+}
+
+/* Wrapper panel admin/proveedor en sección inferior */
+.panel-admin-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(223, 24, 138, 0.05), rgba(0, 229, 255, 0.05));
+}
+
+.panel-admin-wrapper .btn-panel-admin {
+    max-width: 320px;
+}
+
+/* Botón Panel de Administración */
+.btn-panel-admin {
+    margin-top: 20px;
+    padding: 12px 20px;
+    width: 100%;
+    background: linear-gradient(135deg, #df188a, #00e5ff);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.btn-panel-admin:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(223, 24, 138, 0.5);
+    filter: brightness(1.1);
 }

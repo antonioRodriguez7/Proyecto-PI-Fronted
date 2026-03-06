@@ -17,6 +17,22 @@ function Perfil_Admin() {
     });
     const [searchQuery, setSearchQuery] = useState('');
 
+    // --- Estado sección ARTISTAS ---
+    const [nuevoArtista, setNuevoArtista] = useState({
+        nombre: '',
+        diaSemana: '',
+        diaMes: '',
+        mes: '',
+        spotifyUrl: ''
+    });
+    const [artistas, setArtistas] = useState([]);
+
+    const handleAddArtista = () => {
+        if (!nuevoArtista.nombre) return;
+        setArtistas(prev => [...prev, { ...nuevoArtista, id: Date.now() }]);
+        setNuevoArtista({ nombre: '', diaSemana: '', diaMes: '', mes: '', spotifyUrl: '' });
+    };
+
     // --- Estado sección ENTRADAS ---
     const [nuevaEntrada, setNuevaEntrada] = useState({
         categoria: '', descripcion: '', precio: '', caracteristica: '', imagen: null
@@ -276,25 +292,72 @@ function Perfil_Admin() {
                                 GESTIÓN DE ARTISTAS - AÑADIR NUEVO
                             </h3>
 
-                            <form className="admin-form">
-                                <div className="form-grid">
-                                    <input type="text" placeholder="Nombre del artista / grupo" />
-                                    <input type="text" placeholder="Género musical" />
+                            <form className="admin-form" onSubmit={e => e.preventDefault()}>
+                                <div className="form-grid artistas-form-grid">
 
-                                    <input type="date" />
-                                    <input type="time" />
+                                    {/* Campo 1: Nombre */}
+                                    <div className="artista-field artista-field-full">
+                                        <label>Nombre del artista</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Nombre del artista / grupo"
+                                            value={nuevoArtista.nombre}
+                                            onChange={e => setNuevoArtista(p => ({ ...p, nombre: e.target.value }))}
+                                        />
+                                    </div>
 
-                                    <input type="text" placeholder="Caché (€)" />
-                                    <input type="text" placeholder="Escenario asignado" />
+                                    {/* Campo 2: Fecha */}
+                                    <div className="artista-field artista-field-full">
+                                        <label>Fecha de actuación</label>
+                                        <div className="fecha-selects">
+                                            <select
+                                                value={nuevoArtista.diaSemana}
+                                                onChange={e => setNuevoArtista(p => ({ ...p, diaSemana: e.target.value }))}
+                                            >
+                                                <option value="">Día semana</option>
+                                                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(d => (
+                                                    <option key={d} value={d}>{d}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                value={nuevoArtista.diaMes}
+                                                onChange={e => setNuevoArtista(p => ({ ...p, diaMes: e.target.value }))}
+                                            >
+                                                <option value="">Día</option>
+                                                {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                                                    <option key={d} value={d}>{d}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                value={nuevoArtista.mes}
+                                                onChange={e => setNuevoArtista(p => ({ ...p, mes: e.target.value }))}
+                                            >
+                                                <option value="">Mes</option>
+                                                {['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(m => (
+                                                    <option key={m} value={m}>{m}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                    <input type="text" placeholder="Requisitos técnicos (Rider)" />
-                                    <input type="text" placeholder="URL Imagen promocional" />
+                                    {/* Campo 3: URL Spotify */}
+                                    <div className="artista-field artista-field-full">
+                                        <label>URL de Spotify</label>
+                                        <input
+                                            type="url"
+                                            placeholder="https://open.spotify.com/artist/..."
+                                            value={nuevoArtista.spotifyUrl}
+                                            onChange={e => setNuevoArtista(p => ({ ...p, spotifyUrl: e.target.value }))}
+                                        />
+                                    </div>
+
                                 </div>
 
                                 <div className="form-actions">
                                     <button
                                         type="button"
                                         className="btn-add-artist"
+                                        onClick={handleAddArtista}
                                     >
                                         Añadir artista
                                     </button>
