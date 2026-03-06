@@ -23,14 +23,23 @@ function Perfil_Admin() {
         diaSemana: '',
         diaMes: '',
         mes: '',
-        spotifyUrl: ''
+        spotifyUrl: '',
+        imagen: null
     });
     const [artistas, setArtistas] = useState([]);
 
     const handleAddArtista = () => {
         if (!nuevoArtista.nombre) return;
         setArtistas(prev => [...prev, { ...nuevoArtista, id: Date.now() }]);
-        setNuevoArtista({ nombre: '', diaSemana: '', diaMes: '', mes: '', spotifyUrl: '' });
+        setNuevoArtista({ nombre: '', diaSemana: '', diaMes: '', mes: '', spotifyUrl: '', imagen: null });
+    };
+
+    const handleUpdateArtista = (id, field, value) => {
+        setArtistas(prev => prev.map(a => a.id === id ? { ...a, [field]: value } : a));
+    };
+
+    const handleDeleteArtista = (id) => {
+        setArtistas(prev => prev.filter(a => a.id !== id));
     };
 
     // --- Estado sección ENTRADAS ---
@@ -351,6 +360,31 @@ function Perfil_Admin() {
                                         />
                                     </div>
 
+                                    {/* Campo imagen */}
+                                    <div className="artista-field artista-field-full">
+                                        <label>Imagen del artista</label>
+                                        <label className="artista-imagen-upload">
+                                            {nuevoArtista.imagen ? (
+                                                <div className="artista-imagen-preview-wrapper">
+                                                    <img
+                                                        src={URL.createObjectURL(nuevoArtista.imagen)}
+                                                        alt="preview"
+                                                        className="artista-imagen-preview"
+                                                    />
+                                                    <span className="artista-imagen-change-label">🖼️ Cambiar imagen</span>
+                                                </div>
+                                            ) : (
+                                                <span>🖼️ Seleccionar imagen</span>
+                                            )}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                style={{ display: 'none' }}
+                                                onChange={e => setNuevoArtista(p => ({ ...p, imagen: e.target.files[0] || null }))}
+                                            />
+                                        </label>
+                                    </div>
+
                                 </div>
 
                                 <div className="form-actions">
@@ -364,6 +398,106 @@ function Perfil_Admin() {
                                 </div>
                             </form>
                         </div>
+
+                        {/* ARTISTAS AÑADIDOS */}
+                        {artistas.length > 0 && (
+                            <div className="artistas-existentes">
+                                <h3 className="entradas-existentes-title">Artistas añadidos</h3>
+                                <div className="artistas-grid">
+                                    {artistas.map(artista => (
+                                        <div key={artista.id} className="artista-card">
+
+                                            {/* Preview imagen + botón eliminar */}
+                                            <div className="artista-card-img-row">
+                                                <label className="artista-card-img-label">
+                                                    {artista.imagen ? (
+                                                        <img
+                                                            src={URL.createObjectURL(artista.imagen)}
+                                                            alt={artista.nombre}
+                                                            className="artista-card-img"
+                                                        />
+                                                    ) : (
+                                                        <div className="artista-card-img-placeholder">🎤</div>
+                                                    )}
+                                                    <span className="artista-card-img-overlay">🖼️ Cambiar</span>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        style={{ display: 'none' }}
+                                                        onChange={e => handleUpdateArtista(artista.id, 'imagen', e.target.files[0] || null)}
+                                                    />
+                                                </label>
+                                                <button
+                                                    className="entrada-delete-btn"
+                                                    onClick={() => handleDeleteArtista(artista.id)}
+                                                >✕</button>
+                                            </div>
+
+                                            <input
+                                                className="entrada-edit-input"
+                                                value={artista.nombre}
+                                                placeholder="Nombre del artista"
+                                                onChange={e => handleUpdateArtista(artista.id, 'nombre', e.target.value)}
+                                            />
+
+                                            <div className="artista-card-fecha">
+                                                <select
+                                                    className="artista-edit-select"
+                                                    value={artista.diaSemana}
+                                                    onChange={e => handleUpdateArtista(artista.id, 'diaSemana', e.target.value)}
+                                                >
+                                                    <option value="">Día semana</option>
+                                                    {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(d => (
+                                                        <option key={d} value={d}>{d}</option>
+                                                    ))}
+                                                </select>
+                                                <select
+                                                    className="artista-edit-select"
+                                                    value={artista.diaMes}
+                                                    onChange={e => handleUpdateArtista(artista.id, 'diaMes', e.target.value)}
+                                                >
+                                                    <option value="">Día</option>
+                                                    {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                                                        <option key={d} value={d}>{d}</option>
+                                                    ))}
+                                                </select>
+                                                <select
+                                                    className="artista-edit-select"
+                                                    value={artista.mes}
+                                                    onChange={e => handleUpdateArtista(artista.id, 'mes', e.target.value)}
+                                                >
+                                                    <option value="">Mes</option>
+                                                    {['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(m => (
+                                                        <option key={m} value={m}>{m}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            <input
+                                                className="entrada-edit-input artista-spotify-input"
+                                                value={artista.spotifyUrl}
+                                                placeholder="URL de Spotify"
+                                                onChange={e => handleUpdateArtista(artista.id, 'spotifyUrl', e.target.value)}
+                                            />
+
+                                            {artista.spotifyUrl && (
+                                                <a
+                                                    href={artista.spotifyUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="artista-spotify-link"
+                                                >
+                                                    🎵 Abrir en Spotify
+                                                </a>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="entradas-save">
+                                    <button className="btn-guardar">Guardar cambios</button>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="admin-stats">
                             <div className="stat-card">
