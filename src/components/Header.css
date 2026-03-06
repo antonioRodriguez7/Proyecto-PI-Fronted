@@ -1,14 +1,39 @@
 .subsonic-header-wrap {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1200;
-  padding: 14px 20px;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 0 20px;
+
+  background: transparent;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* visible arriba */
+.subsonic-header-wrap.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* oculto al bajar */
+.subsonic-header-wrap.is-hidden {
+  transform: translateY(-140%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* CONTENEDOR PRINCIPAL */
 .subsonic-header {
+  width: 100%;
   max-width: 1400px;
-  margin: auto;
+  margin-top: 12px;
 
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -18,18 +43,17 @@
   padding: 14px 28px;
   border-radius: 999px;
 
-  /* fondo más oscuro */
   background: linear-gradient(
     135deg,
     rgba(24, 24, 30, 0.96),
     rgba(10, 10, 14, 0.96)
   );
 
-  border: 2px solid #00e5ff;
+  border: 2px solid #146a7d;
 
   box-shadow:
-    0 0 12px rgba(0, 229, 255, 0.25),
-    0 0 24px rgba(223, 24, 138, 0.18);
+    0 0 10px rgba(0, 159, 194, 0.22),
+    0 0 22px rgba(223, 24, 138, 0.14);
 }
 
 /* BRAND */
@@ -59,19 +83,20 @@
   background: linear-gradient(
     135deg,
     #df188a,
-    #00e5ff
+    #00b8d4
   );
 
   color: white;
   font-weight: bold;
   font-size: 0.95rem;
   cursor: pointer;
+
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .subsonic-pill-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 229, 255, 0.18);
+  box-shadow: 0 6px 16px rgba(0, 184, 212, 0.18);
 }
 
 /* LINKS */
@@ -92,7 +117,7 @@
 }
 
 .subsonic-nav-link:hover {
-  color: #00e5ff;
+  color: #00b8d4;
   transform: translateY(-1px);
 }
 
@@ -117,7 +142,7 @@
   gap: 6px;
 
   background: rgba(20, 20, 28, 0.98);
-  border: 1px solid rgba(0, 229, 255, 0.25);
+  border: 1px solid rgba(0, 159, 194, 0.25);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
 }
 
@@ -140,60 +165,47 @@
 
 .subsonic-dropdown-menu button:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: #00e5ff;
-}
-
-/* HAMBURGUESA */
-.subsonic-burger {
-  border: none;
-  background: transparent;
-
-  font-size: 1.8rem;
-  color: #df188a;
-  cursor: pointer;
-
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.subsonic-burger:hover {
-  transform: scale(1.05);
-  color: #00e5ff;
-}
-
-/* MENU MÓVIL */
-.subsonic-mobile-menu {
-  max-width: 1400px;
-  margin: 10px auto 0;
-  padding: 14px;
-  border-radius: 20px;
-
-  background: rgba(20, 20, 28, 0.98);
-  border: 1px solid rgba(0, 229, 255, 0.3);
-
-  display: flex;
-  justify-content: center;
+  color: #00b8d4;
 }
 
 /* BOTÓN LOGIN */
-.subsonic-mobile-menu button {
-  border: none;
-  padding: 12px 24px;
+.subsonic-login-btn {
+  border: 2px solid #009fc2;
+  background: transparent;
+  color: #00b8d4;
+
+  padding: 10px 22px;
   border-radius: 999px;
-  font-weight: bold;
 
-  background: linear-gradient(
-    135deg,
-    #df188a,
-    #00e5ff
-  );
-
-  color: white;
+  font-size: 0.95rem;
+  font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
+
+  transition: all 0.25s ease;
+}
+
+.subsonic-login-btn:hover {
+  background: #00b8d4;
+  color: #081015;
+  box-shadow: 0 0 14px rgba(0, 184, 212, 0.28);
 }
 
 /* RESPONSIVE */
 @media (max-width: 950px) {
+  .subsonic-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    border-radius: 28px;
+  }
+
+  .subsonic-brand,
+  .subsonic-login-btn {
+    justify-self: center;
+  }
+
   .subsonic-nav {
-    display: none;
+    flex-wrap: wrap;
+    gap: 18px;
   }
 }
