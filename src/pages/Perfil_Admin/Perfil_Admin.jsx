@@ -15,6 +15,7 @@ function Perfil_Admin() {
         tamano: [],
         precio: []
     });
+    const [searchQuery, setSearchQuery] = useState('');
 
     // --- Estado sección ENTRADAS ---
     const [nuevaEntrada, setNuevaEntrada] = useState({
@@ -175,6 +176,16 @@ function Perfil_Admin() {
 
     const espaciosFiltrados = espacios.filter(espacio => {
         if (filtros.zona.length > 0 && !filtros.zona.includes(espacio.zonaGeneral)) return false;
+
+        if (searchQuery.trim()) {
+            const q = searchQuery.toLowerCase();
+            const coincide =
+                espacio.nombre.toLowerCase().includes(q) ||
+                espacio.caracteristica.toLowerCase().includes(q) ||
+                espacio.lugar.toLowerCase().includes(q) ||
+                espacio.zonaGeneral.toLowerCase().includes(q);
+            if (!coincide) return false;
+        }
 
         if (filtros.tamano.length > 0) {
             const size = parseInt(espacio.tamano);
@@ -407,6 +418,8 @@ function Perfil_Admin() {
                                     type="text"
                                     placeholder="Buscar espacio..."
                                     className="search-input"
+                                    value={searchQuery}
+                                    onChange={e => setSearchQuery(e.target.value)}
                                 />
                             </div>
 
