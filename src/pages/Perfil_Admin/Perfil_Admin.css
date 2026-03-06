@@ -814,3 +814,77 @@
     color: #000;
     box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
 }
+
+/* ============================================
+   FORMULARIO ARTISTAS (3 campos)
+   ============================================ */
+
+.artistas-form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.artista-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.artista-field label {
+    color: #aaa;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.artista-field input {
+    padding: 14px 16px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.artista-field input:focus {
+    border-color: #00e5ff;
+}
+
+/* Los 3 selects de fecha en una fila */
+.fecha-selects {
+    display: flex;
+    gap: 12px;
+}
+
+.fecha-selects select {
+    flex: 1;
+    padding: 14px 12px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aaa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+.fecha-selects select:focus {
+    border-color: #00e5ff;
+}
+
+.fecha-selects select option {
+    background-color: #1a1a1a;
+    color: white;
+}
