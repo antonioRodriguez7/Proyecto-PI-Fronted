@@ -172,9 +172,195 @@
     transition: all 0.3s;
 }
 
-.btn-add-artist:hover {
+.btn-add-artist:hover:not(:disabled) {
     background-color: #00b3cc;
     box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+}
+
+.btn-add-artist:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Estilos para MIS ESPACIOS */
+.mis-espacios-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.mis-espacios-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.mis-espacios-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.mis-espacios-box {
+    background-color: #121212;
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    flex: 1;
+    overflow-y: auto;
+}
+
+.box-title {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #00e5ff;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.espacios-contratados-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.espacio-contratado-item {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.05), rgba(223, 24, 138, 0.05));
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.espacio-contratado-item:hover {
+    border-color: #00e5ff;
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(223, 24, 138, 0.1));
+    transform: translateX(5px);
+}
+
+.espacio-contratado-item.seleccionado {
+    border-color: #00e5ff;
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(223, 24, 138, 0.15));
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+}
+
+.contratado-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.contratado-header h4 {
+    color: #fff;
+    margin: 0;
+    font-size: 16px;
+}
+
+.tipo-badge {
+    background-color: rgba(0, 229, 255, 0.2);
+    color: #00e5ff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.contratado-detalle {
+    color: #aaa;
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+.servicios-asignados {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+}
+
+.servicio-asignado-title {
+    color: #00e5ff;
+    font-size: 12px;
+    margin: 0 0 8px 0;
+    font-weight: bold;
+}
+
+.servicio-asignado-descripcion {
+    color: #cfcfcf;
+    font-size: 12px;
+    margin: 6px 0 0;
+    line-height: 1.4;
+}
+
+.servicio-bloqueado-box {
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 16px;
+    background: rgba(223, 24, 138, 0.08);
+}
+
+.servicio-bloqueado-text {
+    margin: 0;
+    color: #ff9ac9;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.btn-reemplazar-servicio {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border: 1px solid #00e5ff;
+    background: transparent;
+    color: #00e5ff;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-reemplazar-servicio:hover {
+    background: rgba(0, 229, 255, 0.15);
+}
+
+.admin-content-box textarea {
+    padding: 15px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.admin-content-box textarea:focus {
+    border-color: #00e5ff;
+}
+
+.admin-content-box select {
+    padding: 15px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+}
+
+.admin-content-box select:focus {
+    border-color: #00e5ff;
+}
+
+.admin-content-box select option {
+    background: #1a1a1a;
+    color: white;
 }
 
 /* Estilos para la sección de ESPACIOS (Proveedor) */
@@ -542,5 +728,9 @@
 
     .modal-actions-proveedor button {
         min-width: 100%;
+    }
+
+    .mis-espacios-container {
+        grid-template-columns: 1fr;
     }
 }
