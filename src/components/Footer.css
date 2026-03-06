@@ -2,20 +2,14 @@
   width: 100%;
   background: rgba(0, 0, 0, 0.95);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-
-  /* altura y espaciado como en la imagen */
   padding: 22px 48px;
-
-  /* 3 columnas: izquierda - centro - derecha */
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-
-  /* evita que se encoja raro */
   box-sizing: border-box;
 }
 
-/* IZQUIERDA: iconos circulares */
+/* IZQUIERDA */
 .footer-left {
   justify-self: start;
   display: flex;
@@ -27,16 +21,13 @@
   height: 46px;
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.35);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   font-size: 13px;
   font-weight: 700;
-
   transition: 0.25s ease;
 }
 
@@ -46,44 +37,36 @@
   transform: translateY(-1px);
 }
 
-/* CENTRO: texto centrado real */
+/* CENTRO */
 .footer-center {
   justify-self: center;
   text-align: center;
 }
 
-.proveedores-link {
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
+.festival-name {
+  color: rgba(255, 255, 255, 0.78);
   font-size: 16px;
-  font-weight: 700;
-  transition: 0.25s ease;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
-.proveedores-link:hover {
-  color: #ffffff;
-}
-
-/* DERECHA: botón spotify alineado a la derecha */
+/* DERECHA */
 .footer-right {
   justify-self: end;
   display: flex;
   justify-content: flex-end;
 }
 
-/* Botón tipo pill verde */
 .spotify-placeholder {
   padding: 12px 22px;
   border-radius: 999px;
-
   background: transparent;
   border: 2px solid #1db954;
   color: #1db954;
-
   font-weight: 800;
   font-size: 14px;
   cursor: pointer;
-
   transition: 0.25s ease;
 }
 
@@ -93,7 +76,7 @@
   transform: translateY(-1px);
 }
 
-/* Responsive: en móvil apilamos */
+/* Responsive */
 @media (max-width: 720px) {
   .footer {
     grid-template-columns: 1fr;
