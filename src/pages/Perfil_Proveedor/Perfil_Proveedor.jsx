@@ -208,7 +208,7 @@ function Perfil_Proveedor() {
         if (espacio.disponibilidad !== 'Disponible') return false;
 
         if (filtros.zona.length > 0 && !filtros.zona.includes(espacio.zonaGeneral)) return false;
-        
+
         if (filtros.tamano.length > 0) {
             const size = parseInt(espacio.tamano);
             let cumpleTamano = false;
@@ -247,7 +247,7 @@ function Perfil_Proveedor() {
             {/* MENÚ LATERAL */}
             <aside className="admin-sidebar">
 
-                <div 
+                <div
                     className="admin-logo-container"
                     onClick={() => navigate('/')}
                     style={{ cursor: 'pointer' }}
@@ -257,13 +257,13 @@ function Perfil_Proveedor() {
                 </div>
 
                 <nav className="admin-nav">
-                    <button 
+                    <button
                         className={`admin-nav-btn ${activeSection === 'MIS_ESPACIOS' ? 'active' : ''}`}
                         onClick={() => setActiveSection('MIS_ESPACIOS')}
                     >
                         MIS ESPACIOS
                     </button>
-                    <button 
+                    <button
                         className={`admin-nav-btn ${activeSection === 'ESPACIOS' ? 'active' : ''}`}
                         onClick={() => setActiveSection('ESPACIOS')}
                     >
@@ -272,7 +272,7 @@ function Perfil_Proveedor() {
                 </nav>
 
                 <div className="admin-sidebar-footer">
-                    <button 
+                    <button
                         className="admin-logout-btn"
                         onClick={() => navigate('/login')}
                     >
@@ -287,7 +287,12 @@ function Perfil_Proveedor() {
 
                 <header className="admin-header">
                     <h2>{activeSection === 'MIS_ESPACIOS' ? 'Mis Espacios Contratados' : 'Contratar Espacios Disponibles'}</h2>
-                    <div className="admin-profile-circle">P</div>
+                    <div
+                        className="admin-profile-circle"
+                        onClick={() => navigate('/perfil')}
+                        style={{ cursor: 'pointer' }}
+                        title="Ir a mi perfil"
+                    >P</div>
                 </header>
 
                 {/* SECCIÓN MIS ESPACIOS */}
@@ -298,7 +303,7 @@ function Perfil_Proveedor() {
                             <div className="mis-espacios-box">
                                 <h3 className="box-title">Mis Espacios Contratados</h3>
                                 {espaciosContratados.length === 0 ? (
-                                    <p style={{color: '#aaa', textAlign: 'center', padding: '20px'}}>
+                                    <p style={{ color: '#aaa', textAlign: 'center', padding: '20px' }}>
                                         No tienes espacios contratados
                                     </p>
                                 ) : (
@@ -307,7 +312,7 @@ function Perfil_Proveedor() {
                                             const servicioAsignado = espacio.servicios[0];
 
                                             return (
-                                                <div 
+                                                <div
                                                     key={espacio.id}
                                                     className={`espacio-contratado-item ${servicioSeleccionado?.espacioId === espacio.id ? 'seleccionado' : ''}`}
                                                     onClick={() => {
@@ -348,17 +353,17 @@ function Perfil_Proveedor() {
                                 </h3>
 
                                 {servicioSeleccionado?.espacioId ? (
-                                    <p style={{color: '#00e5ff', fontSize: '14px', marginBottom: '20px'}}>
+                                    <p style={{ color: '#00e5ff', fontSize: '14px', marginBottom: '20px' }}>
                                         📌 Espacio seleccionado: {espacioSeleccionado?.nombre}
                                     </p>
                                 ) : (
-                                    <p style={{color: '#df188a', fontSize: '14px', marginBottom: '20px'}}>
+                                    <p style={{ color: '#df188a', fontSize: '14px', marginBottom: '20px' }}>
                                         ⚠️ Selecciona un espacio antes de crear un servicio
                                     </p>
                                 )}
 
                                 {servicioSeleccionado?.espacioId && espacioSeleccionadoTieneServicio && !reemplazoActivo && (
-                                    <p style={{color: '#df188a', fontSize: '14px', marginBottom: '20px'}}>
+                                    <p style={{ color: '#df188a', fontSize: '14px', marginBottom: '20px' }}>
                                         ⚠️ Este espacio ya tiene un servicio asignado. Solo se permite uno por espacio.
                                     </p>
                                 )}
@@ -390,20 +395,20 @@ function Perfil_Proveedor() {
                                 ) : (
                                     <form className="admin-form">
                                         {reemplazoActivo && (
-                                            <p style={{color: '#00e5ff', fontSize: '14px', marginBottom: '15px'}}>
+                                            <p style={{ color: '#00e5ff', fontSize: '14px', marginBottom: '15px' }}>
                                                 ✏️ Modo reemplazo activo: actualiza los datos y guarda los cambios.
                                             </p>
                                         )}
                                         <div className="form-grid">
-                                            <input 
-                                                type="text" 
-                                                placeholder="Nombre del servicio" 
+                                            <input
+                                                type="text"
+                                                placeholder="Nombre del servicio"
                                                 value={formServicio.nombre}
-                                                onChange={(e) => setFormServicio({...formServicio, nombre: e.target.value})}
+                                                onChange={(e) => setFormServicio({ ...formServicio, nombre: e.target.value })}
                                             />
-                                            <select 
+                                            <select
                                                 value={formServicio.tipo}
-                                                onChange={(e) => setFormServicio({...formServicio, tipo: e.target.value})}
+                                                onChange={(e) => setFormServicio({ ...formServicio, tipo: e.target.value })}
                                             >
                                                 <option value="Restauración">Restauración</option>
                                                 <option value="Merchandising">Merchandising</option>
@@ -412,23 +417,23 @@ function Perfil_Proveedor() {
                                                 <option value="Otro">Otro</option>
                                             </select>
 
-                                            <textarea 
+                                            <textarea
                                                 placeholder="Descripción del servicio"
                                                 value={formServicio.descripcion}
-                                                onChange={(e) => setFormServicio({...formServicio, descripcion: e.target.value})}
-                                                style={{gridColumn: '1 / -1'}}
+                                                onChange={(e) => setFormServicio({ ...formServicio, descripcion: e.target.value })}
+                                                style={{ gridColumn: '1 / -1' }}
                                             />
 
-                                            <input 
-                                                type="text" 
-                                                placeholder="Fechas (ej: 17-20 julio)" 
+                                            <input
+                                                type="text"
+                                                placeholder="Fechas (ej: 17-20 julio)"
                                                 value={formServicio.fechas}
-                                                onChange={(e) => setFormServicio({...formServicio, fechas: e.target.value})}
+                                                onChange={(e) => setFormServicio({ ...formServicio, fechas: e.target.value })}
                                             />
                                         </div>
 
                                         <div className="form-actions">
-                                            <button 
+                                            <button
                                                 type="button"
                                                 className="btn-add-artist"
                                                 disabled={!servicioSeleccionado?.espacioId || !formServicio.nombre || !formServicio.fechas}
@@ -450,13 +455,13 @@ function Perfil_Proveedor() {
                                                             nuevoServicio
                                                         ]);
 
-                                                        setEspaciosContratados(prev => prev.map(espacio => 
+                                                        setEspaciosContratados(prev => prev.map(espacio =>
                                                             espacio.id === servicioSeleccionado.espacioId
                                                                 ? { ...espacio, tipo: formServicio.tipo, servicios: [nuevoServicio] }
                                                                 : espacio
                                                         ));
 
-                                                        setFormServicio({nombre: '', tipo: 'Restauración', descripcion: '', fechas: ''});
+                                                        setFormServicio({ nombre: '', tipo: 'Restauración', descripcion: '', fechas: '' });
                                                         setModoReemplazoEspacioId(null);
                                                         alert(`Servicio "${nuevoServicio.nombre}" asignado a "${espacioSeleccionado?.nombre}"`);
                                                     }
@@ -480,40 +485,40 @@ function Perfil_Proveedor() {
                             <div className="filter-section">
                                 <h4>Zona General</h4>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.zona.includes('Norte')}
                                         onChange={() => handleFiltroChange('zona', 'Norte')}
                                     />
                                     Norte
                                 </label>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.zona.includes('Centro')}
                                         onChange={() => handleFiltroChange('zona', 'Centro')}
                                     />
                                     Centro
                                 </label>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.zona.includes('Este')}
                                         onChange={() => handleFiltroChange('zona', 'Este')}
                                     />
                                     Este
                                 </label>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.zona.includes('Oeste')}
                                         onChange={() => handleFiltroChange('zona', 'Oeste')}
                                     />
                                     Oeste
                                 </label>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.zona.includes('Sur')}
                                         onChange={() => handleFiltroChange('zona', 'Sur')}
                                     />
@@ -524,24 +529,24 @@ function Perfil_Proveedor() {
                             <div className="filter-section">
                                 <h4>Tamaño</h4>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.tamano.includes('< 200m²')}
                                         onChange={() => handleFiltroChange('tamano', '< 200m²')}
                                     />
                                     {'< 200m²'}
                                 </label>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.tamano.includes('200 - 500m²')}
                                         onChange={() => handleFiltroChange('tamano', '200 - 500m²')}
                                     />
                                     200 - 500m²
                                 </label>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.tamano.includes('> 500m²')}
                                         onChange={() => handleFiltroChange('tamano', '> 500m²')}
                                     />
@@ -552,24 +557,24 @@ function Perfil_Proveedor() {
                             <div className="filter-section">
                                 <h4>Precio</h4>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.precio.includes('< 2000€')}
                                         onChange={() => handleFiltroChange('precio', '< 2000€')}
                                     />
                                     {'< 2.000€'}
                                 </label>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.precio.includes('2000 - 3000€')}
                                         onChange={() => handleFiltroChange('precio', '2000 - 3000€')}
                                     />
                                     2.000 - 3.000€
                                 </label>
                                 <label>
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         checked={filtros.precio.includes('> 3000€')}
                                         onChange={() => handleFiltroChange('precio', '> 3000€')}
                                     />
@@ -577,7 +582,7 @@ function Perfil_Proveedor() {
                                 </label>
                             </div>
 
-                            <button 
+                            <button
                                 className="btn-clear-filters"
                                 onClick={() => setFiltros({ zona: [], tamano: [], precio: [] })}
                             >
@@ -588,9 +593,9 @@ function Perfil_Proveedor() {
                         {/* Grid de espacios */}
                         <div className="espacios-content">
                             <div className="espacios-search">
-                                <input 
-                                    type="text" 
-                                    placeholder="Buscar espacio..." 
+                                <input
+                                    type="text"
+                                    placeholder="Buscar espacio..."
                                     className="search-input"
                                 />
                             </div>
@@ -601,15 +606,15 @@ function Perfil_Proveedor() {
 
                             <div className="espacios-grid">
                                 {espaciosFiltrados.map(espacio => (
-                                    <div 
-                                        key={espacio.id} 
+                                    <div
+                                        key={espacio.id}
                                         className="espacio-card-proveedor"
                                         onClick={() => setSelectedEspacio(espacio)}
                                     >
-                                                     <span className="zona-badge">{espacio.zonaGeneral}</span>
+                                        <span className="zona-badge">{espacio.zonaGeneral}</span>
                                         <h3>{espacio.nombre}</h3>
-                                                     <p className="espacio-tipo">{espacio.caracteristica}</p>
-                                                     <p className="espacio-detalle">💰 {espacio.precio}</p>
+                                        <p className="espacio-tipo">{espacio.caracteristica}</p>
+                                        <p className="espacio-detalle">💰 {espacio.precio}</p>
                                         <p className="espacio-detalle">📍 {espacio.lugar}</p>
                                         <p className="espacio-detalle">📏 {espacio.tamano}</p>
                                         <div className="espacio-footer">
@@ -633,10 +638,10 @@ function Perfil_Proveedor() {
                     <div className="modal-overlay" onClick={() => setSelectedEspacio(null)}>
                         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                             <button className="modal-close" onClick={() => setSelectedEspacio(null)}>✕</button>
-                            
+
                             <h2>{selectedEspacio.nombre}</h2>
                             <p className="modal-subtitle">{selectedEspacio.caracteristica}</p>
-                            
+
                             <div className="modal-grid">
                                 <div className="modal-section">
                                     <h4>📏 Dimensiones</h4>
@@ -653,7 +658,7 @@ function Perfil_Proveedor() {
                                 <div className="modal-section">
                                     <h4>💰 Precio</h4>
                                     <p className="precio-destacado">{selectedEspacio.precio}</p>
-                                    <p style={{fontSize: '0.9em', color: '#aaa'}}>Por los 3 días del festival</p>
+                                    <p style={{ fontSize: '0.9em', color: '#aaa' }}>Por los 3 días del festival</p>
                                 </div>
 
                                 <div className="modal-section modal-section-full">
@@ -672,13 +677,13 @@ function Perfil_Proveedor() {
                             </div>
 
                             <div className="modal-actions-proveedor">
-                                <button 
+                                <button
                                     className="btn-solicitar-alquiler"
                                     onClick={() => handleSolicitarAlquiler(selectedEspacio)}
                                 >
                                     📋 Solicitar Alquiler
                                 </button>
-                                <button 
+                                <button
                                     className="btn-contactar"
                                     onClick={() => alert('Abriendo chat con el administrador...')}
                                 >

@@ -290,7 +290,12 @@ function Perfil_Admin() {
                                 activeSection === 'ENTRADAS' ? 'Panel de Administración - Entradas' :
                                     'Panel de Administración'}
                     </h2>
-                    <div className="admin-profile-circle">A</div>
+                    <div
+                        className="admin-profile-circle"
+                        onClick={() => navigate('/perfil')}
+                        style={{ cursor: 'pointer' }}
+                        title="Ir a mi perfil"
+                    >A</div>
                 </header>
 
                 {/* SECCIÓN ARTISTAS */}

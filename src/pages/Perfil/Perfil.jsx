@@ -135,12 +135,12 @@ function Perfil() {
                     {(tipoUsuario === 'administrador' || tipoUsuario === 'proveedor') ? (
                         <div className="panel-admin-wrapper">
                             <h3 className="section-title">
-                                {tipoUsuario === 'administrador' ? '🛡️ Administración' : '🏪 Panel de Proveedor'}
+                                {tipoUsuario === 'administrador' ? 'Administración' : 'Panel de Proveedor'}
                             </h3>
                             <p className="perfil-desc-text" style={{ marginBottom: '24px' }}>
                                 {tipoUsuario === 'administrador'
-                                    ? 'Accede al panel de administración para gestionar usuarios, espacios y configuración del sistema.'
-                                    : 'Accede a tu panel de proveedor para gestionar tus espacios, reservas y contactos.'}
+                                    ? 'Accede al panel de administración para gestionar artistas, entradas y espacios.'
+                                    : 'Accede a tu panel de proveedor para gestionar tus espacios y servicios.'}
                             </p>
                             <button
                                 className="btn-panel-admin"
@@ -150,7 +150,7 @@ function Perfil() {
                                         : '/perfil-proveedor'
                                 )}
                             >
-                                🛠️ Panel de Administración
+                                Panel de Administración
                             </button>
                         </div>
                     ) : (
