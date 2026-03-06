@@ -746,13 +746,24 @@ function Perfil_Admin() {
                                 </div>
                                 <div className="entradas-form-field entradas-form-imagen">
                                     <label>Imagen entrada</label>
-                                    <label className="imagen-upload-btn">
-                                        🖼️ {nuevaEntrada.imagen ? nuevaEntrada.imagen.name : 'Seleccionar imagen'}
+                                    <label className="artista-imagen-upload">
+                                        {nuevaEntrada.imagen ? (
+                                            <div className="artista-imagen-preview-wrapper">
+                                                <img
+                                                    src={URL.createObjectURL(nuevaEntrada.imagen)}
+                                                    alt="preview"
+                                                    className="artista-imagen-preview"
+                                                />
+                                                <span className="artista-imagen-change-label">🖼️ Cambiar imagen</span>
+                                            </div>
+                                        ) : (
+                                            <span>🖼️ Seleccionar imagen</span>
+                                        )}
                                         <input
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'none' }}
-                                            onChange={e => setNuevaEntrada(p => ({ ...p, imagen: e.target.files[0] }))}
+                                            onChange={e => setNuevaEntrada(p => ({ ...p, imagen: e.target.files[0] || null }))}
                                         />
                                     </label>
                                 </div>
@@ -770,11 +781,23 @@ function Perfil_Admin() {
                             <div className="entradas-grid">
                                 {entradas.map(entrada => (
                                     <div key={entrada.id} className="entrada-card">
-                                        <div className="entrada-card-header">
-                                            <label className="imagen-upload-btn small">
-                                                🖼️ Cambiar imagen
-                                                <input type="file" accept="image/*" style={{ display: 'none' }}
-                                                    onChange={e => handleUpdateEntrada(entrada.id, 'imagen', e.target.files[0])}
+                                        <div className="artista-card-img-row">
+                                            <label className="artista-card-img-label">
+                                                {entrada.imagen ? (
+                                                    <img
+                                                        src={URL.createObjectURL(entrada.imagen)}
+                                                        alt={entrada.categoria}
+                                                        className="artista-card-img"
+                                                    />
+                                                ) : (
+                                                    <div className="artista-card-img-placeholder">🎟️</div>
+                                                )}
+                                                <span className="artista-card-img-overlay">🖼️ Cambiar</span>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    style={{ display: 'none' }}
+                                                    onChange={e => handleUpdateEntrada(entrada.id, 'imagen', e.target.files[0] || null)}
                                                 />
                                             </label>
                                             <button
