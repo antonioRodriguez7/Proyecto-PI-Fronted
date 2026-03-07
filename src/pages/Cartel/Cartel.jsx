@@ -8,7 +8,6 @@ import { getArtistas } from "../../services/api";
 function Cartel() {
 
     const [search, setSearch] = useState("");
-
     const [artistas, setArtistas] = useState([]);
 
     useEffect(() => {
@@ -66,8 +65,18 @@ function Cartel() {
 
                                     <p>{artista.dia}</p>
 
-                                   <div className="artist-socials">
-                                        <FaSpotify className="spotify-icon" />
+                                    <div className="artist-socials">
+
+                                        {artista.spoty && (
+                                            <a
+                                                href={artista.spoty}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <FaSpotify className="spotify-icon" />
+                                            </a>
+                                        )}
+
                                     </div>
 
                                 </div>

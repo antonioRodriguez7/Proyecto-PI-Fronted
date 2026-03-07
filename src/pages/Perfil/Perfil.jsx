@@ -6,7 +6,6 @@ function Perfil() {
 
     const navigate = useNavigate();
 
-    // TODO: Reemplazar con el valor real del contexto de autenticación
     // Valores posibles: 'cliente' | 'proveedor' | 'administrador'
     const [tipoUsuario] = useState('administrador');
 

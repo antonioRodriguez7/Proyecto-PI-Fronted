@@ -1,23 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Perfil_Admin.css';
 import Footer from "../../components/Footer";
-
-
+import { getEspacios, getEntradas } from "../../services/api";
 
 function Perfil_Admin() {
 
     const navigate = useNavigate();
+
     const [activeSection, setActiveSection] = useState('ARTISTAS');
     const [selectedEspacio, setSelectedEspacio] = useState(null);
+
     const [filtros, setFiltros] = useState({
         zona: [],
         tamano: [],
         precio: []
     });
+
     const [searchQuery, setSearchQuery] = useState('');
 
-    // --- Estado sección ARTISTAS ---
+    // ---------------- ESPACIOS (fake backend) ----------------
+    const [espacios, setEspacios] = useState([]);
+
+    // ---------------- ARTISTAS ----------------
     const [nuevoArtista, setNuevoArtista] = useState({
         nombre: '',
         diaSemana: '',
@@ -26,211 +31,149 @@ function Perfil_Admin() {
         spotifyUrl: '',
         imagen: null
     });
+
     const [artistas, setArtistas] = useState([]);
 
+    // ---------------- ENTRADAS (fake backend) ----------------
+    const [nuevaEntrada, setNuevaEntrada] = useState({
+        categoria: '',
+        descripcion: '',
+        precio: '',
+        caracteristica: '',
+        imagen: null
+    });
+
+    const [entradas, setEntradas] = useState([]);
+
+    // ---------------- CARGAR DATOS DEL FAKE BACKEND ----------------
+    useEffect(() => {
+
+        getEspacios().then(data => {
+            setEspacios(data);
+        });
+
+        getEntradas().then(data => {
+            setEntradas(data);
+        });
+
+    }, []);
+
+    // ---------------- ARTISTAS ----------------
     const handleAddArtista = () => {
         if (!nuevoArtista.nombre) return;
+
         setArtistas(prev => [...prev, { ...nuevoArtista, id: Date.now() }]);
-        setNuevoArtista({ nombre: '', diaSemana: '', diaMes: '', mes: '', spotifyUrl: '', imagen: null });
+
+        setNuevoArtista({
+            nombre: '',
+            diaSemana: '',
+            diaMes: '',
+            mes: '',
+            spotifyUrl: '',
+            imagen: null
+        });
     };
 
     const handleUpdateArtista = (id, field, value) => {
-        setArtistas(prev => prev.map(a => a.id === id ? { ...a, [field]: value } : a));
+        setArtistas(prev =>
+            prev.map(a => a.id === id ? { ...a, [field]: value } : a)
+        );
     };
 
     const handleDeleteArtista = (id) => {
         setArtistas(prev => prev.filter(a => a.id !== id));
     };
 
-    // --- Estado sección ENTRADAS ---
-    const [nuevaEntrada, setNuevaEntrada] = useState({
-        categoria: '', descripcion: '', precio: '', caracteristica: '', imagen: null
-    });
-    const [entradas, setEntradas] = useState([
-        { id: 1, categoria: 'General', descripcion: 'Acceso a todas las zonas comunes', precio: '89€', caracteristica: 'Válida los 3 días', imagen: null },
-        { id: 2, categoria: 'VIP', descripcion: 'Acceso zona VIP + backstage', precio: '250€', caracteristica: 'Incluye consumiciones', imagen: null },
-    ]);
-
+    // ---------------- ENTRADAS ----------------
     const handleAddEntrada = () => {
+
         if (!nuevaEntrada.categoria || !nuevaEntrada.precio) return;
-        setEntradas(prev => [...prev, { ...nuevaEntrada, id: Date.now() }]);
-        setNuevaEntrada({ categoria: '', descripcion: '', precio: '', caracteristica: '', imagen: null });
+
+        setEntradas(prev => [
+            ...prev,
+            { ...nuevaEntrada, id: Date.now() }
+        ]);
+
+        setNuevaEntrada({
+            categoria: '',
+            descripcion: '',
+            precio: '',
+            caracteristica: '',
+            imagen: null
+        });
     };
 
     const handleUpdateEntrada = (id, field, value) => {
-        setEntradas(prev => prev.map(e => e.id === id ? { ...e, [field]: value } : e));
+        setEntradas(prev =>
+            prev.map(e => e.id === id ? { ...e, [field]: value } : e)
+        );
     };
 
     const handleDeleteEntrada = (id) => {
         setEntradas(prev => prev.filter(e => e.id !== id));
     };
 
-    const espacios = [
-        {
-            id: 1,
-            nombre: "Zona Velar",
-            zonaGeneral: "Norte",
-            caracteristica: "Terreno llano cubierto con carpa",
-            evento: "Subsonic Festival 2026",
-            lugar: "Acceso principal norte del recinto",
-            tamano: "500m²",
-            precio: "2.500€",
-            descripcion: "Espacio premium en zona de máximo tránsito, con carpa que garantiza protección frente a las condiciones meteorológicas.",
-            capacidad: "20 stands",
-            servicios: ["Electricidad", "Agua corriente", "Zona de carga/descarga", "Iluminación nocturna"],
-            disponibilidad: "Disponible",
-            imagen: "/espacios/foodcourt.jpg"
-        },
-        {
-            id: 2,
-            nombre: "Zona Paseo Central",
-            zonaGeneral: "Centro",
-            caracteristica: "Avenida peatonal pavimentada",
-            evento: "Subsonic Festival 2026",
-            lugar: "Eje central del recinto",
-            tamano: "300m²",
-            precio: "1.800€",
-            descripcion: "Paseo principal de alto tránsito con suelo pavimentado y señalización visual estratégica.",
-            capacidad: "15 stands",
-            servicios: ["Electricidad", "WiFi", "Seguridad 24h", "Almacén cercano"],
-            disponibilidad: "Disponible",
-            imagen: "/espacios/merchandising.jpg"
-        },
-        {
-            id: 3,
-            nombre: "Zona Relax",
-            zonaGeneral: "Este",
-            caracteristica: "Terreno ajardinado con sombra natural",
-            evento: "Subsonic Festival 2026",
-            lugar: "Área verde lateral este",
-            tamano: "800m²",
-            precio: "3.200€",
-            descripcion: "Área verde con árboles y vegetación que proporciona sombra natural, ideal para experiencias al aire libre.",
-            capacidad: "10 espacios grandes",
-            servicios: ["Electricidad", "Sombra natural", "Zona WiFi", "Asientos incluidos"],
-            disponibilidad: "Reservado",
-            negocio: { nombre: "Green Bites", categoria: "Comida" },
-            imagen: "/espacios/chillout.jpg"
-        },
-        {
-            id: 4,
-            nombre: "Zona VIP",
-            zonaGeneral: "Centro",
-            caracteristica: "Recinto cerrado con acceso controlado",
-            evento: "Subsonic Festival 2026",
-            lugar: "Zona exclusiva central del recinto",
-            tamano: "150m²",
-            precio: "4.500€",
-            descripcion: "Espacio exclusivo vallado con acceso restringido por pulsera, ambiente premium y atención personalizada.",
-            capacidad: "5 barras",
-            servicios: ["Electricidad", "Agua", "Cámaras frigoríficas", "Sistema de sonido", "Iluminación especial"],
-            disponibilidad: "Disponible",
-            imagen: "/espacios/vipbar.jpg"
-        },
-        {
-            id: 5,
-            nombre: "Zona Innova",
-            zonaGeneral: "Sur",
-            caracteristica: "Pabellón cubierto climatizado",
-            evento: "Subsonic Festival 2026",
-            lugar: "Pabellón sur - Área Innovación",
-            tamano: "600m²",
-            precio: "2.800€",
-            descripcion: "Pabellón cerrado con climatización, perfecto para instalaciones tecnológicas y activaciones de alto impacto.",
-            capacidad: "8 stands grandes",
-            servicios: ["Electricidad de alta potencia", "WiFi fibra óptica", "Climatización", "Proyectores"],
-            disponibilidad: "Disponible",
-            imagen: "/espacios/gaming.jpg"
-        },
-        {
-            id: 6,
-            nombre: "Zona Oeste",
-            zonaGeneral: "Oeste",
-            caracteristica: "Callejón urbano con suelo de adoquín",
-            evento: "Subsonic Festival 2026",
-            lugar: "Lateral oeste del recinto",
-            tamano: "400m²",
-            precio: "2.000€",
-            descripcion: "Callejón con estética urbana, suelo de adoquín y alto flujo de asistentes procedentes del escenario principal.",
-            capacidad: "12 food trucks",
-            servicios: ["Electricidad", "Agua", "Sistema de extracción", "Zona de comensales"],
-            disponibilidad: "Disponible",
-            imagen: "/espacios/streetfood.jpg"
-        },
-        {
-            id: 7,
-            nombre: "Zona Boutique",
-            zonaGeneral: "Norte",
-            caracteristica: "Espacio acotado con iluminación especial",
-            evento: "Subsonic Festival 2026",
-            lugar: "Entrada secundaria norte",
-            tamano: "120m²",
-            precio: "1.500€",
-            descripcion: "Rincón exclusivo con iluminación cálida y delimitación visual, pensado para marcas de carácter premium.",
-            capacidad: "6 stands",
-            servicios: ["Electricidad", "Espejos", "Iluminación profesional", "Aire acondicionado"],
-            disponibilidad: "Disponible",
-            imagen: "/espacios/beauty.jpg"
-        },
-        {
-            id: 8,
-            nombre: "Zona Stage",
-            zonaGeneral: "Sur",
-            caracteristica: "Tarima elevada con gradas laterales",
-            evento: "Subsonic Festival 2026",
-            lugar: "Extremo sur del recinto",
-            tamano: "200m²",
-            precio: "5.000€",
-            descripcion: "Escenario secundario elevado con gradas a ambos lados, máxima visibilidad desde cualquier ángulo del recinto.",
-            capacidad: "1 escenario completo",
-            servicios: ["Sistema de sonido completo", "Iluminación profesional", "Backstage", "Generador propio"],
-            disponibilidad: "Reservado",
-            negocio: { nombre: "SoundWave Events", categoria: "Entretenimiento" },
-            imagen: "/espacios/stage.jpg"
-        }
-    ];
-
+    // ---------------- FILTROS ----------------
     const handleFiltroChange = (categoria, valor) => {
+
         setFiltros(prev => {
+
             const nuevosValores = prev[categoria].includes(valor)
                 ? prev[categoria].filter(v => v !== valor)
                 : [...prev[categoria], valor];
+
             return { ...prev, [categoria]: nuevosValores };
+
         });
     };
 
+    // ---------------- FILTRADO ESPACIOS ----------------
     const espaciosFiltrados = espacios.filter(espacio => {
-        if (filtros.zona.length > 0 && !filtros.zona.includes(espacio.zonaGeneral)) return false;
+
+        if (filtros.zona.length > 0 && !filtros.zona.includes(espacio.zonaGeneral))
+            return false;
 
         if (searchQuery.trim()) {
+
             const q = searchQuery.toLowerCase();
+
             const coincide =
                 espacio.nombre.toLowerCase().includes(q) ||
                 espacio.caracteristica.toLowerCase().includes(q) ||
                 espacio.lugar.toLowerCase().includes(q) ||
                 espacio.zonaGeneral.toLowerCase().includes(q);
+
             if (!coincide) return false;
         }
 
         if (filtros.tamano.length > 0) {
+
             const size = parseInt(espacio.tamano);
+
             let cumpleTamano = false;
+
             if (filtros.tamano.includes('< 200m²') && size < 200) cumpleTamano = true;
             if (filtros.tamano.includes('200 - 500m²') && size >= 200 && size <= 500) cumpleTamano = true;
             if (filtros.tamano.includes('> 500m²') && size > 500) cumpleTamano = true;
+
             if (!cumpleTamano) return false;
         }
 
         if (filtros.precio.length > 0) {
+
             const precio = parseInt(espacio.precio.replace(/[€.,]/g, ''));
+
             let cumplePrecio = false;
+
             if (filtros.precio.includes('< 2000€') && precio < 2000) cumplePrecio = true;
             if (filtros.precio.includes('2000 - 3000€') && precio >= 2000 && precio <= 3000) cumplePrecio = true;
             if (filtros.precio.includes('> 3000€') && precio > 3000) cumplePrecio = true;
+
             if (!cumplePrecio) return false;
         }
 
         return true;
+
     });
 
     return (

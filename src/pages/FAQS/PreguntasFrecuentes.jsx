@@ -1,41 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PreguntasFrecuentes.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { getFaqsUsuarios, getFaqsProveedores } from "../../services/api";
 
 export default function PreguntasFrecuentes() {
 
-  const faqsUsuarios = [
-    
-  { q: "¿Cómo compro entradas?", a: "Desde la sección Entradas puedes seleccionar el abono y completar la compra." },
-  { q: "¿Puedo devolver mi entrada?", a: "Consulta las condiciones en Política y Privacidad." },
-  { q: "¿Hay restricciones de edad?", a: "Depende de la normativa del evento. Revisa la sección Info." },
-  { q: "¿Qué puedo llevar al festival?", a: "Consulta la lista de objetos permitidos en Preguntas Frecuentes." },
-  { q: "¿Dónde se celebra y cómo llego?", a: "La ubicación y accesos están en la sección Info/Mapa." },
-  { q: "¿Qué pasa si llueve?", a: "El festival se celebra salvo condiciones extremas. Sigue comunicaciones oficiales." },
-{
-      q: "¿Puedo devolver mi entrada?",
-      a: "Las entradas pueden cancelarse según las condiciones indicadas en Política y Privacidad."
-    }
-  ];
+  const [faqsUsuarios, setFaqsUsuarios] = useState([]);
+  const [faqsProveedores, setFaqsProveedores] = useState([]);
 
-  const faqsProveedores = [
- { q: "¿Cómo me registro como proveedor?", a: "En Registro elige Proveedor y añade la descripción del servicio." },
-  { q: "¿Cómo solicito un espacio?", a: "Desde Proveedores podrás iniciar el proceso de solicitud." },
-  { q: "¿Qué tipos de proveedor se aceptan?", a: "Foodtruck, merchandising, servicios técnicos, etc." },
-  { q: "¿Cómo se valida mi solicitud?", a: "El equipo revisa tu propuesta y contacta contigo." },
-  { q: "¿Hay cuota o comisión?", a: "Depende del tipo de servicio. Se especifica en las condiciones de proveedores." },
-  { q: "¿Qué documentación necesito?", a: "Licencias, seguro, certificados sanitarios (si aplica) y datos fiscales." },
-  ];
-
-  // Para abrir/cerrar cada FAQ
   const [openKey, setOpenKey] = useState(null);
+
+  useEffect(() => {
+    getFaqsUsuarios().then(data => setFaqsUsuarios(data));
+    getFaqsProveedores().then(data => setFaqsProveedores(data));
+  }, []);
+
   const toggle = (key) => setOpenKey(openKey === key ? null : key);
 
   return (
     <div className="faq-page">
-      {/* Header simple (podéis sustituirlo por vuestro Navbar común si lo tenéis) */}
+
       <Header />
+
       <main className="faq-content">
         <h1 className="faq-title">Preguntas Frecuentes</h1>
 
@@ -78,9 +65,11 @@ export default function PreguntasFrecuentes() {
             );
           })}
         </section>
+
       </main>
 
-       <Footer />
+      <Footer />
+
     </div>
   );
 }
