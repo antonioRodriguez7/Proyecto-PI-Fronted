@@ -17,6 +17,31 @@ function Perfil_Admin() {
     });
     const [searchQuery, setSearchQuery] = useState('');
 
+    // --- Estado sección ARTISTAS ---
+    const [nuevoArtista, setNuevoArtista] = useState({
+        nombre: '',
+        diaSemana: '',
+        diaMes: '',
+        mes: '',
+        spotifyUrl: '',
+        imagen: null
+    });
+    const [artistas, setArtistas] = useState([]);
+
+    const handleAddArtista = () => {
+        if (!nuevoArtista.nombre) return;
+        setArtistas(prev => [...prev, { ...nuevoArtista, id: Date.now() }]);
+        setNuevoArtista({ nombre: '', diaSemana: '', diaMes: '', mes: '', spotifyUrl: '', imagen: null });
+    };
+
+    const handleUpdateArtista = (id, field, value) => {
+        setArtistas(prev => prev.map(a => a.id === id ? { ...a, [field]: value } : a));
+    };
+
+    const handleDeleteArtista = (id) => {
+        setArtistas(prev => prev.filter(a => a.id !== id));
+    };
+
     // --- Estado sección ENTRADAS ---
     const [nuevaEntrada, setNuevaEntrada] = useState({
         categoria: '', descripcion: '', precio: '', caracteristica: '', imagen: null
@@ -265,7 +290,12 @@ function Perfil_Admin() {
                                 activeSection === 'ENTRADAS' ? 'Panel de Administración - Entradas' :
                                     'Panel de Administración'}
                     </h2>
-                    <div className="admin-profile-circle">A</div>
+                    <div
+                        className="admin-profile-circle"
+                        onClick={() => navigate('/perfil')}
+                        style={{ cursor: 'pointer' }}
+                        title="Ir a mi perfil"
+                    >A</div>
                 </header>
 
                 {/* SECCIÓN ARTISTAS */}
@@ -276,30 +306,211 @@ function Perfil_Admin() {
                                 GESTIÓN DE ARTISTAS - AÑADIR NUEVO
                             </h3>
 
-                            <form className="admin-form">
-                                <div className="form-grid">
-                                    <input type="text" placeholder="Nombre del artista / grupo" />
-                                    <input type="text" placeholder="Género musical" />
+                            <form className="admin-form" onSubmit={e => e.preventDefault()}>
+                                <div className="form-grid artistas-form-grid">
 
-                                    <input type="date" />
-                                    <input type="time" />
+                                    {/* Campo 1: Nombre */}
+                                    <div className="artista-field artista-field-full">
+                                        <label>Nombre del artista</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Nombre del artista / grupo"
+                                            value={nuevoArtista.nombre}
+                                            onChange={e => setNuevoArtista(p => ({ ...p, nombre: e.target.value }))}
+                                        />
+                                    </div>
 
-                                    <input type="text" placeholder="Caché (€)" />
-                                    <input type="text" placeholder="Escenario asignado" />
+                                    {/* Campo 2: Fecha */}
+                                    <div className="artista-field artista-field-full">
+                                        <label>Fecha de actuación</label>
+                                        <div className="fecha-selects">
+                                            <select
+                                                value={nuevoArtista.diaSemana}
+                                                onChange={e => setNuevoArtista(p => ({ ...p, diaSemana: e.target.value }))}
+                                            >
+                                                <option value="">Día semana</option>
+                                                {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(d => (
+                                                    <option key={d} value={d}>{d}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                value={nuevoArtista.diaMes}
+                                                onChange={e => setNuevoArtista(p => ({ ...p, diaMes: e.target.value }))}
+                                            >
+                                                <option value="">Día</option>
+                                                {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                                                    <option key={d} value={d}>{d}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                value={nuevoArtista.mes}
+                                                onChange={e => setNuevoArtista(p => ({ ...p, mes: e.target.value }))}
+                                            >
+                                                <option value="">Mes</option>
+                                                {['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(m => (
+                                                    <option key={m} value={m}>{m}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                    <input type="text" placeholder="Requisitos técnicos (Rider)" />
-                                    <input type="text" placeholder="URL Imagen promocional" />
+                                    {/* Campo 3: URL Spotify */}
+                                    <div className="artista-field artista-field-full">
+                                        <label>URL de Spotify</label>
+                                        <input
+                                            type="url"
+                                            placeholder="https://open.spotify.com/artist/..."
+                                            value={nuevoArtista.spotifyUrl}
+                                            onChange={e => setNuevoArtista(p => ({ ...p, spotifyUrl: e.target.value }))}
+                                        />
+                                    </div>
+
+                                    {/* Campo imagen */}
+                                    <div className="artista-field artista-field-full">
+                                        <label>Imagen del artista</label>
+                                        <label className="artista-imagen-upload">
+                                            {nuevoArtista.imagen ? (
+                                                <div className="artista-imagen-preview-wrapper">
+                                                    <img
+                                                        src={URL.createObjectURL(nuevoArtista.imagen)}
+                                                        alt="preview"
+                                                        className="artista-imagen-preview"
+                                                    />
+                                                    <span className="artista-imagen-change-label">🖼️ Cambiar imagen</span>
+                                                </div>
+                                            ) : (
+                                                <span>🖼️ Seleccionar imagen</span>
+                                            )}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                style={{ display: 'none' }}
+                                                onChange={e => setNuevoArtista(p => ({ ...p, imagen: e.target.files[0] || null }))}
+                                            />
+                                        </label>
+                                    </div>
+
                                 </div>
 
                                 <div className="form-actions">
                                     <button
                                         type="button"
                                         className="btn-add-artist"
+                                        onClick={handleAddArtista}
                                     >
                                         Añadir artista
                                     </button>
                                 </div>
                             </form>
+                        </div>
+
+                        {/* ARTISTAS AÑADIDOS */}
+                        <div className="artistas-existentes">
+                            <h3 className="entradas-existentes-title">Artistas añadidos</h3>
+
+                            {artistas.length === 0 ? (
+                                <div className="artistas-empty">
+                                    <span className="artistas-empty-icon">🎤</span>
+                                    <p>No hay artistas añadidos todavía.</p>
+                                    <p className="artistas-empty-sub">Usa el formulario de arriba para añadir el primer artista.</p>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="artistas-grid">
+                                        {artistas.map(artista => (
+                                            <div key={artista.id} className="artista-card">
+
+                                                {/* Preview imagen + botón eliminar */}
+                                                <div className="artista-card-img-row">
+                                                    <label className="artista-card-img-label">
+                                                        {artista.imagen ? (
+                                                            <img
+                                                                src={URL.createObjectURL(artista.imagen)}
+                                                                alt={artista.nombre}
+                                                                className="artista-card-img"
+                                                            />
+                                                        ) : (
+                                                            <div className="artista-card-img-placeholder">🎤</div>
+                                                        )}
+                                                        <span className="artista-card-img-overlay">🖼️ Cambiar</span>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            style={{ display: 'none' }}
+                                                            onChange={e => handleUpdateArtista(artista.id, 'imagen', e.target.files[0] || null)}
+                                                        />
+                                                    </label>
+                                                    <button
+                                                        className="entrada-delete-btn"
+                                                        onClick={() => handleDeleteArtista(artista.id)}
+                                                    >✕</button>
+                                                </div>
+
+                                                <input
+                                                    className="entrada-edit-input"
+                                                    value={artista.nombre}
+                                                    placeholder="Nombre del artista"
+                                                    onChange={e => handleUpdateArtista(artista.id, 'nombre', e.target.value)}
+                                                />
+
+                                                <div className="artista-card-fecha">
+                                                    <select
+                                                        className="artista-edit-select"
+                                                        value={artista.diaSemana}
+                                                        onChange={e => handleUpdateArtista(artista.id, 'diaSemana', e.target.value)}
+                                                    >
+                                                        <option value="">Día semana</option>
+                                                        {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(d => (
+                                                            <option key={d} value={d}>{d}</option>
+                                                        ))}
+                                                    </select>
+                                                    <select
+                                                        className="artista-edit-select"
+                                                        value={artista.diaMes}
+                                                        onChange={e => handleUpdateArtista(artista.id, 'diaMes', e.target.value)}
+                                                    >
+                                                        <option value="">Día</option>
+                                                        {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                                                            <option key={d} value={d}>{d}</option>
+                                                        ))}
+                                                    </select>
+                                                    <select
+                                                        className="artista-edit-select"
+                                                        value={artista.mes}
+                                                        onChange={e => handleUpdateArtista(artista.id, 'mes', e.target.value)}
+                                                    >
+                                                        <option value="">Mes</option>
+                                                        {['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(m => (
+                                                            <option key={m} value={m}>{m}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+
+                                                <input
+                                                    className="entrada-edit-input artista-spotify-input"
+                                                    value={artista.spotifyUrl}
+                                                    placeholder="URL de Spotify"
+                                                    onChange={e => handleUpdateArtista(artista.id, 'spotifyUrl', e.target.value)}
+                                                />
+
+                                                {artista.spotifyUrl && (
+                                                    <a
+                                                        href={artista.spotifyUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="artista-spotify-link"
+                                                    >
+                                                        Abrir en Spotify
+                                                    </a>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="entradas-save">
+                                        <button className="btn-guardar">Guardar cambios</button>
+                                    </div>
+                                </>
+                            )}
                         </div>
 
                         <div className="admin-stats">
@@ -497,7 +708,12 @@ function Perfil_Admin() {
 
                             {selectedEspacio.disponibilidad === 'Reservado' && (
                                 <div className="modal-actions">
-                                    <button className="btn-contact">Contactar Proveedor</button>
+                                    <a
+                                        className="btn-contact"
+                                        href={`mailto:${selectedEspacio.negocio?.email || ''}?subject=${encodeURIComponent(`Consulta sobre espacio: ${selectedEspacio.nombre}`)}&body=${encodeURIComponent(`Hola${selectedEspacio.negocio?.nombre ? `, ${selectedEspacio.negocio.nombre}` : ''},\n\nMe pongo en contacto en relación al espacio "${selectedEspacio.nombre}" (${selectedEspacio.lugar}) reservado para el Subsonic Festival 2026.\n\n[Escribe aquí tu mensaje]\n\nUn saludo,\nEquipo Subsonic Festival`)}`}
+                                    >
+                                        Contactar Proveedor
+                                    </a>
                                 </div>
                             )}
                         </div>
@@ -549,13 +765,24 @@ function Perfil_Admin() {
                                 </div>
                                 <div className="entradas-form-field entradas-form-imagen">
                                     <label>Imagen entrada</label>
-                                    <label className="imagen-upload-btn">
-                                        🖼️ {nuevaEntrada.imagen ? nuevaEntrada.imagen.name : 'Seleccionar imagen'}
+                                    <label className="artista-imagen-upload">
+                                        {nuevaEntrada.imagen ? (
+                                            <div className="artista-imagen-preview-wrapper">
+                                                <img
+                                                    src={URL.createObjectURL(nuevaEntrada.imagen)}
+                                                    alt="preview"
+                                                    className="artista-imagen-preview"
+                                                />
+                                                <span className="artista-imagen-change-label">🖼️ Cambiar imagen</span>
+                                            </div>
+                                        ) : (
+                                            <span>🖼️ Seleccionar imagen</span>
+                                        )}
                                         <input
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'none' }}
-                                            onChange={e => setNuevaEntrada(p => ({ ...p, imagen: e.target.files[0] }))}
+                                            onChange={e => setNuevaEntrada(p => ({ ...p, imagen: e.target.files[0] || null }))}
                                         />
                                     </label>
                                 </div>
@@ -570,51 +797,74 @@ function Perfil_Admin() {
                         {/* GESTIONAR EXISTENTES */}
                         <div className="entradas-existentes">
                             <h3 className="entradas-existentes-title">Gestionar entradas existentes</h3>
-                            <div className="entradas-grid">
-                                {entradas.map(entrada => (
-                                    <div key={entrada.id} className="entrada-card">
-                                        <div className="entrada-card-header">
-                                            <label className="imagen-upload-btn small">
-                                                🖼️ Cambiar imagen
-                                                <input type="file" accept="image/*" style={{ display: 'none' }}
-                                                    onChange={e => handleUpdateEntrada(entrada.id, 'imagen', e.target.files[0])}
-                                                />
-                                            </label>
-                                            <button
-                                                className="entrada-delete-btn"
-                                                onClick={() => handleDeleteEntrada(entrada.id)}
-                                            >✕</button>
+
+                            {entradas.length === 0 ? (
+                                <div className="artistas-empty">
+                                    <span className="artistas-empty-icon">🎟️</span>
+                                    <p>No hay entradas creadas todavía.</p>
+                                    <p className="artistas-empty-sub">Usa el formulario de arriba para añadir la primera entrada.</p>
+                                </div>
+                            ) : (
+                                <div className="entradas-grid">
+                                    {entradas.map(entrada => (
+                                        <div key={entrada.id} className="entrada-card">
+                                            <div className="artista-card-img-row">
+                                                <label className="artista-card-img-label">
+                                                    {entrada.imagen ? (
+                                                        <img
+                                                            src={URL.createObjectURL(entrada.imagen)}
+                                                            alt={entrada.categoria}
+                                                            className="artista-card-img"
+                                                        />
+                                                    ) : (
+                                                        <div className="artista-card-img-placeholder">🎟️</div>
+                                                    )}
+                                                    <span className="artista-card-img-overlay">🖼️ Cambiar</span>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        style={{ display: 'none' }}
+                                                        onChange={e => handleUpdateEntrada(entrada.id, 'imagen', e.target.files[0] || null)}
+                                                    />
+                                                </label>
+                                                <button
+                                                    className="entrada-delete-btn"
+                                                    onClick={() => handleDeleteEntrada(entrada.id)}
+                                                >✕</button>
+                                            </div>
+                                            <input
+                                                className="entrada-edit-input"
+                                                value={entrada.categoria}
+                                                placeholder="Categoría"
+                                                onChange={e => handleUpdateEntrada(entrada.id, 'categoria', e.target.value)}
+                                            />
+                                            <input
+                                                className="entrada-edit-input"
+                                                value={entrada.descripcion}
+                                                placeholder="Descripción"
+                                                onChange={e => handleUpdateEntrada(entrada.id, 'descripcion', e.target.value)}
+                                            />
+                                            <input
+                                                className="entrada-edit-input"
+                                                value={entrada.precio}
+                                                placeholder="Precio"
+                                                onChange={e => handleUpdateEntrada(entrada.id, 'precio', e.target.value)}
+                                            />
+                                            <input
+                                                className="entrada-edit-input"
+                                                value={entrada.caracteristica}
+                                                placeholder="Característica"
+                                                onChange={e => handleUpdateEntrada(entrada.id, 'caracteristica', e.target.value)}
+                                            />
                                         </div>
-                                        <input
-                                            className="entrada-edit-input"
-                                            value={entrada.categoria}
-                                            placeholder="Categoría"
-                                            onChange={e => handleUpdateEntrada(entrada.id, 'categoria', e.target.value)}
-                                        />
-                                        <input
-                                            className="entrada-edit-input"
-                                            value={entrada.descripcion}
-                                            placeholder="Descripción"
-                                            onChange={e => handleUpdateEntrada(entrada.id, 'descripcion', e.target.value)}
-                                        />
-                                        <input
-                                            className="entrada-edit-input"
-                                            value={entrada.precio}
-                                            placeholder="Precio"
-                                            onChange={e => handleUpdateEntrada(entrada.id, 'precio', e.target.value)}
-                                        />
-                                        <input
-                                            className="entrada-edit-input"
-                                            value={entrada.caracteristica}
-                                            placeholder="Característica"
-                                            onChange={e => handleUpdateEntrada(entrada.id, 'caracteristica', e.target.value)}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="entradas-save">
-                                <button className="btn-guardar">Guardar</button>
-                            </div>
+                                    ))}
+                                </div>
+                            )}
+                            {entradas.length > 0 && (
+                                <div className="entradas-save">
+                                    <button className="btn-guardar">Guardar</button>
+                                </div>
+                            )}
                         </div>
 
                     </div>

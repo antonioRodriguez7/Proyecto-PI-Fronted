@@ -13,9 +13,9 @@ function Registro() {
 
             {/* CABECERA */}
             <div className="registro-top">
-                <img 
-                    src="/logoPI.png" 
-                    alt="Logo Subsonic" 
+                <img
+                    src="/logoPI.png"
+                    alt="Logo Subsonic"
                     className="registro-logo"
                     style={{ cursor: 'pointer' }}
                     onClick={() => navigate('/')}
@@ -32,7 +32,7 @@ function Registro() {
                     <form className="registro-form">
                         <input type="text" placeholder="Nombre Completo" />
                         <input type="email" placeholder="Correo electrónico" />
-                        <input type="text" placeholder="Dirección" />
+                        <input type="text" placeholder="Nombre de usuario" />
                         <input type="password" placeholder="Contraseña" />
                         <input type="password" placeholder="Confirmar contraseña" />
                     </form>
@@ -58,15 +58,16 @@ function Registro() {
                         >
                             Proveedor
                         </div>
+
+                        <div
+                            className={`tipo-card ${tipoUsuario === 'administrador' ? 'active' : ''}`}
+                            onClick={() => setTipoUsuario('administrador')}
+                        >
+                            Administrador
+                        </div>
                     </div>
 
-                    {tipoUsuario === 'proveedor' && (
-                        <textarea
-                            className="descripcion-box"
-                            placeholder="Descripción de tu servicio (ej. Foodtruck, Sonido...)"
-                            rows="4"
-                        ></textarea>
-                    )}
+
 
                     <div className="terms-group">
                         <input type="checkbox" id="terms" />
@@ -75,7 +76,7 @@ function Registro() {
                         </label>
                     </div>
 
-                    <button 
+                    <button
                         className="btn-crear"
                         onClick={() => navigate('/login')}
                     >
@@ -84,7 +85,7 @@ function Registro() {
 
                     <p className="login-link">
                         ¿Tienes cuenta?
-                        <span 
+                        <span
                             onClick={() => navigate('/login')}
                             style={{ cursor: 'pointer', fontWeight: 'bold' }}
                         >
