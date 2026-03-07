@@ -593,6 +593,18 @@
 .btn-contact {
     background-color: #df188a;
     color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 150px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
 }
 
 .btn-contact:hover {
@@ -1100,4 +1112,35 @@
 
 .artista-card-img-label:hover .artista-card-img-overlay {
     opacity: 1;
+}
+
+/* Estado vacío artistas */
+.artistas-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    color: #555;
+    text-align: center;
+    gap: 10px;
+    border: 1px dashed #2a2a2a;
+    border-radius: 12px;
+    background-color: #0f0f0f;
+}
+
+.artistas-empty-icon {
+    font-size: 48px;
+    opacity: 0.4;
+}
+
+.artistas-empty p {
+    font-size: 16px;
+    color: #555;
+    margin: 0;
+}
+
+.artistas-empty-sub {
+    font-size: 13px !important;
+    color: #3a3a3a !important;
 }

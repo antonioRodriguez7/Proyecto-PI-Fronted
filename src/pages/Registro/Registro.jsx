@@ -32,7 +32,7 @@ function Registro() {
                     <form className="registro-form">
                         <input type="text" placeholder="Nombre Completo" />
                         <input type="email" placeholder="Correo electrónico" />
-                        <input type="text" placeholder="Dirección" />
+                        <input type="text" placeholder="Nombre de usuario" />
                         <input type="password" placeholder="Contraseña" />
                         <input type="password" placeholder="Confirmar contraseña" />
                     </form>
