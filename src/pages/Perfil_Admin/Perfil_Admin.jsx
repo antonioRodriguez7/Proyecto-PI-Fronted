@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Perfil_Admin.css';
 import Footer from "../../components/Footer";
-import { getEspacios, getEntradas } from "../../services/api";
+import { getEspacios, getEntradas, getArtistas } from "../../services/api";
 
 function Perfil_Admin() {
 
@@ -53,7 +53,30 @@ function Perfil_Admin() {
         });
 
         getEntradas().then(data => {
-            setEntradas(data);
+            setEntradas(data.map(e => ({
+                id: e.id,
+                categoria: e.nombre ?? e.categoria ?? '',
+                descripcion: e.descripcion ?? '',
+                precio: e.precio ?? '',
+                caracteristica: e.etiqueta ?? e.caracteristica ?? '',
+                imagen: e.img ?? e.imagen ?? null
+            })));
+        });
+
+        getArtistas().then(data => {
+            setArtistas(data.map(a => {
+                // Separar fecha en 3 partes (dia semana, dia mes y mes)
+                const partes = (a.dia || '').split(' ');
+                return {
+                    id: a.id,
+                    nombre: a.nombre ?? '',
+                    diaSemana: partes[0] ?? '',
+                    diaMes: partes[1] ?? '',
+                    mes: partes[2] ?? '',
+                    spotifyUrl: a.spoty ?? a.spotifyUrl ?? '',
+                    imagen: a.img ?? a.imagen ?? null
+                };
+            }));
         });
 
     }, []);
@@ -368,7 +391,11 @@ function Perfil_Admin() {
                                                     <label className="artista-card-img-label">
                                                         {artista.imagen ? (
                                                             <img
-                                                                src={URL.createObjectURL(artista.imagen)}
+                                                                src={
+                                                                    typeof artista.imagen === 'string'
+                                                                        ? artista.imagen
+                                                                        : URL.createObjectURL(artista.imagen)
+                                                                }
                                                                 alt={artista.nombre}
                                                                 className="artista-card-img"
                                                             />
@@ -698,7 +725,7 @@ function Perfil_Admin() {
                                     />
                                 </div>
                                 <div className="entradas-form-field">
-                                    <label>Característica</label>
+                                    <label>Etiqueta</label>
                                     <input
                                         type="text"
                                         placeholder="Ej: Válida 3 días"
@@ -755,7 +782,11 @@ function Perfil_Admin() {
                                                 <label className="artista-card-img-label">
                                                     {entrada.imagen ? (
                                                         <img
-                                                            src={URL.createObjectURL(entrada.imagen)}
+                                                            src={
+                                                                typeof entrada.imagen === 'string'
+                                                                    ? entrada.imagen
+                                                                    : URL.createObjectURL(entrada.imagen)
+                                                            }
                                                             alt={entrada.categoria}
                                                             className="artista-card-img"
                                                         />
@@ -796,7 +827,7 @@ function Perfil_Admin() {
                                             <input
                                                 className="entrada-edit-input"
                                                 value={entrada.caracteristica}
-                                                placeholder="Característica"
+                                                placeholder="Etiqueta"
                                                 onChange={e => handleUpdateEntrada(entrada.id, 'caracteristica', e.target.value)}
                                             />
                                         </div>
