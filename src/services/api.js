@@ -17,3 +17,7 @@ export const getEspaciosContratadosProveedor = backend.getEspaciosContratadosPro
 export const getServiciosProveedor = backend.getServiciosProveedor;
 export const getEspaciosDisponibles = backend.getEspaciosDisponibles;
 export const getEspacios = backend.getEspacios;
+
+export const getUsuarios = backend.getUsuarios;
+export const getUsuarioById = backend.getUsuarioById;
+export const loginUsuario = backend.loginUsuario;

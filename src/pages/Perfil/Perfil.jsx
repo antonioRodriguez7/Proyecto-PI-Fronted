@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Perfil.css';
 
@@ -6,17 +6,23 @@ function Perfil() {
 
     const navigate = useNavigate();
 
-    // Valores posibles: 'cliente' | 'proveedor' | 'administrador'
-    const [tipoUsuario] = useState('administrador');
+    // Leer usuario guardado por Login
+    const usuarioGuardado = JSON.parse(localStorage.getItem('usuarioActivo') || 'null');
 
-    // Estado del formulario de perfil
+    // Si no hay sesión, redirigir al login
+    useEffect(() => {
+        if (!usuarioGuardado) navigate('/login');
+    }, []);
+
+    const tipoUsuario = usuarioGuardado?.tipo || 'cliente';
+
     const [perfil, setPerfil] = useState({
-        nombre: 'Juan',
-        apellidos: 'Pérez',
-        username: 'juanito_99',
-        descripcion: '',
-        email: 'juan@ejemplo.com',
-        password: '••••••••'
+        nombre: usuarioGuardado?.nombre || '',
+        apellidos: usuarioGuardado?.apellido || '',
+        username: usuarioGuardado?.username || '',
+        descripcion: usuarioGuardado?.descripcion || '',
+        email: usuarioGuardado?.email || '',
+        password: ''
     });
 
     const handleChange = (field, value) =>
@@ -46,7 +52,10 @@ function Perfil() {
 
                 <button
                     className="btn-logout-nav"
-                    onClick={() => navigate('/login')}
+                    onClick={() => {
+                        localStorage.removeItem('usuarioActivo');
+                        navigate('/login');
+                    }}
                 >
                     Cerrar Sesión
                 </button>

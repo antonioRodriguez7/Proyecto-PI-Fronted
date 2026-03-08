@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { loginUsuario } from '../../services/api';
 
 function Login() {
 
     const navigate = useNavigate();
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     return (
         <div className="login-container">
@@ -21,41 +26,53 @@ function Login() {
                     <h2>Iniciar Sesión</h2>
                     <p>Bienvenido de nuevo al festival</p>
 
-                    <form className="login-form">
+                    <form className="login-form" onSubmit={e => e.preventDefault()}>
                         <div className="input-group">
-                            <label>Usuario / Email</label>
-                            <input type="text" placeholder="Introduce tu usuario..." />
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                placeholder="Introduce tu email..."
+                                value={email}
+                                onChange={e => { setEmail(e.target.value); setError(''); }}
+                            />
                         </div>
 
                         <div className="input-group">
                             <label>Contraseña</label>
-                            <input type="password" placeholder="••••••••" />
+                            <input
+                                type="password"
+                                placeholder="••••••••"
+                                value={password}
+                                onChange={e => { setPassword(e.target.value); setError(''); }}
+                            />
                         </div>
 
-                        {/* Simulación login cliente */}
+                        {error && (
+                            <p style={{ color: '#ff4d6d', fontSize: '13px', textAlign: 'center', margin: '0' }}>
+                                {error}
+                            </p>
+                        )}
+
                         <button
                             type="button"
                             className="btn-entrar"
-                            onClick={() => navigate('/perfil')}
+                            onClick={async () => {
+                                if (!email || !password) {
+                                    setError('Por favor, rellena todos los campos.');
+                                    return;
+                                }
+                                const usuario = await loginUsuario(email, password);
+                                if (!usuario) {
+                                    setError('Email o contraseña incorrectos.');
+                                    return;
+                                }
+                                localStorage.setItem('usuarioActivo', JSON.stringify(usuario));
+                                navigate('/perfil');
+                            }}
                         >
                             ENTRAR
                         </button>
                     </form>
-
-                    <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '13px' }}>
-                        <span
-                            style={{ color: '#888', cursor: 'pointer', display: 'block', marginBottom: '8px' }}
-                            onClick={() => navigate('/perfil-admin')}
-                        >
-                            [Prueba] Entrar como Admin
-                        </span>
-                        <span
-                            style={{ color: '#888', cursor: 'pointer' }}
-                            onClick={() => navigate('/perfil-proveedor')}
-                        >
-                            [Prueba] Entrar como Proveedor
-                        </span>
-                    </p>
 
                     <div className="login-links">
                         <a href="#olvido" className="link-olvido">
