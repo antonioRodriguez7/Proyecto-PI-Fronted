@@ -20,20 +20,30 @@ function Entradas() {
         });
     }, []);
 
-    /* Esto es una funcion que actualiza el numero de entradas seleccionadas para cada tipo de ticket*/
     const handleCantidad = (id, value) => {
         setCantidades({
             ...cantidades,
-            [id]: value
+            [id]: Number(value)
         });
     };
+
+    // Calculo total de entradas y precio total
+    const totalEntradas = Object.values(cantidades).reduce((acc, v) => acc + Number(v), 0);
+
+    const precioTotal = entradas.reduce((acc, entrada) => {
+        const cant = Number(cantidades[entrada.id] || 0);
+        if (cant === 0) return acc;
+
+        const numStr = entrada.precio.replace(/[^0-9,.]/g, '').replace(',', '.');
+        return acc + (parseFloat(numStr) || 0) * cant;
+    }, 0);
 
 
     return (
         <div className="entradas-page">
 
             {/* ================= HEADER ================= */}
-             <Header />
+            <Header />
 
             {/* ================= HERO CON IMG REAL ================= */}
             <section className="entradas-hero">
@@ -98,9 +108,52 @@ function Entradas() {
                     ))}
                 </div>
 
-                <button className="buy-global-btn">
-                    Comprar Entradas Seleccionadas
-                </button>
+                {/* BARRA RESUMEN COMPRA */}
+                <div className="pedido-bar">
+                    <div className="pedido-resumen">
+                        <h3 className="pedido-resumen-title">Tu pedido</h3>
+
+                        {totalEntradas === 0 ? (
+                            <p className="pedido-resumen-vacio">No hay entradas seleccionadas</p>
+                        ) : (
+                            <>
+                                <ul className="pedido-resumen-lista">
+                                    {entradas
+                                        .filter(e => Number(cantidades[e.id]) > 0)
+                                        .map(e => {
+                                            const cant = Number(cantidades[e.id]);
+                                            const numStr = e.precio.replace(/[^0-9,.]/g, '').replace(',', '.');
+                                            const subtotal = (parseFloat(numStr) || 0) * cant;
+                                            return (
+                                                <li key={e.id} className="pedido-resumen-item">
+                                                    <span className="pedido-resumen-nombre">{e.nombre}</span>
+                                                    <span className="pedido-resumen-detalle">
+                                                        {cant} × {e.precio} =
+                                                        <strong> {subtotal.toLocaleString('es-ES', { minimumFractionDigits: 2 })}€</strong>
+                                                    </span>
+                                                </li>
+                                            );
+                                        })
+                                    }
+                                </ul>
+                                <div className="pedido-resumen-total">
+                                    <span>{totalEntradas} entrada{totalEntradas !== 1 ? 's' : ''}</span>
+                                    <span className="pedido-resumen-precio-total">
+                                        {precioTotal.toLocaleString('es-ES', { minimumFractionDigits: 2 })}€
+                                    </span>
+                                </div>
+                            </>
+                        )}
+                    </div>
+
+                    <button
+                        className="buy-global-btn"
+                        disabled={totalEntradas === 0}
+                        style={totalEntradas === 0 ? { opacity: 0.4, cursor: 'not-allowed' } : {}}
+                    >
+                        Comprar Entradas Seleccionadas
+                    </button>
+                </div>
 
             </section>
 
