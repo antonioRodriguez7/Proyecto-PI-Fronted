@@ -45,40 +45,51 @@ function Perfil_Admin() {
 
     const [entradas, setEntradas] = useState([]);
 
-    // ---------------- CARGAR DATOS DEL FAKE BACKEND ----------------
+    const [loadingAdmin, setLoadingAdmin] = useState(true);
+    const [errorAdmin, setErrorAdmin] = useState(null);
+
+    // ---------------- CARGAR DATOS DEL BACKEND ----------------
     useEffect(() => {
+        const fetchAdminData = async () => {
+            setLoadingAdmin(true);
+            try {
+                const [espaciosData, entradasData, artistasData] = await Promise.all([
+                    getEspacios(),
+                    getEntradas(),
+                    getArtistas()
+                ]);
 
-        getEspacios().then(data => {
-            setEspacios(data);
-        });
+                setEspacios(Array.isArray(espaciosData) ? espaciosData : []);
+                setEntradas(Array.isArray(entradasData) ? entradasData.map(e => ({
+                    id: e.id,
+                    categoria: e.nombre ?? e.categoria ?? '',
+                    descripcion: e.descripcion ?? '',
+                    precio: e.precio ?? '',
+                    caracteristica: e.etiqueta ?? e.caracteristica ?? '',
+                    imagen: e.img ?? e.imagen ?? null
+                })) : []);
 
-        getEntradas().then(data => {
-            setEntradas(data.map(e => ({
-                id: e.id,
-                categoria: e.nombre ?? e.categoria ?? '',
-                descripcion: e.descripcion ?? '',
-                precio: e.precio ?? '',
-                caracteristica: e.etiqueta ?? e.caracteristica ?? '',
-                imagen: e.img ?? e.imagen ?? null
-            })));
-        });
+                setArtistas(Array.isArray(artistasData) ? artistasData.map(a => {
+                    const partes = (a.dia || '').split(' ');
+                    return {
+                        id: a.id,
+                        nombre: a.nombre ?? '',
+                        diaSemana: partes[0] ?? '',
+                        diaMes: partes[1] ?? '',
+                        mes: partes[2] ?? '',
+                        spotifyUrl: a.spoty ?? a.spotifyUrl ?? '',
+                        imagen: a.img ?? a.imagen ?? null
+                    };
+                }) : []);
+            } catch (error) {
+                console.error("Error al cargar datos del panel de admin:", error);
+                setErrorAdmin("Error cargando los datos del panel.");
+            } finally {
+                setLoadingAdmin(false);
+            }
+        };
 
-        getArtistas().then(data => {
-            setArtistas(data.map(a => {
-                // Separar fecha en 3 partes (dia semana, dia mes y mes)
-                const partes = (a.dia || '').split(' ');
-                return {
-                    id: a.id,
-                    nombre: a.nombre ?? '',
-                    diaSemana: partes[0] ?? '',
-                    diaMes: partes[1] ?? '',
-                    mes: partes[2] ?? '',
-                    spotifyUrl: a.spoty ?? a.spotifyUrl ?? '',
-                    imagen: a.img ?? a.imagen ?? null
-                };
-            }));
-        });
-
+        fetchAdminData();
     }, []);
 
     // ---------------- ARTISTAS ----------------

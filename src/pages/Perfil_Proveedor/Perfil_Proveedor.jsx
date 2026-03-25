@@ -26,6 +26,9 @@ function Perfil_Proveedor() {
     const [serviciosProveedor, setServiciosProveedor] = useState([]);
     const [espaciosDisponibles, setEspaciosDisponibles] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     const [formServicio, setFormServicio] = useState({
         nombre: '',
         tipo: 'Restauración',
@@ -34,9 +37,24 @@ function Perfil_Proveedor() {
     });
 
     useEffect(() => {
-        getEspaciosContratadosProveedor().then(data => setEspaciosContratados(data));
-        getServiciosProveedor().then(data => setServiciosProveedor(data));
-        getEspaciosDisponibles().then(data => setEspaciosDisponibles(data));
+        const fetchProveedorData = async () => {
+            try {
+                const [espaciosContratadosData, serviciosProveedorData, espaciosDisponiblesData] = await Promise.all([
+                    getEspaciosContratadosProveedor(),
+                    getServiciosProveedor(),
+                    getEspaciosDisponibles()
+                ]);
+                setEspaciosContratados(Array.isArray(espaciosContratadosData) ? espaciosContratadosData : []);
+                setServiciosProveedor(Array.isArray(serviciosProveedorData) ? serviciosProveedorData : []);
+                setEspaciosDisponibles(Array.isArray(espaciosDisponiblesData) ? espaciosDisponiblesData : []);
+            } catch (err) {
+                console.error("Error cargando datos de proveedor:", err);
+                setError("No se pudieron cargar los datos del proveedor.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchProveedorData();
     }, []);
 
     const handleFiltroChange = (categoria, valor) => {

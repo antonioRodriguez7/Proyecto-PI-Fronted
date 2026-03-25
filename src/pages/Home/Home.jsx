@@ -45,12 +45,23 @@ useEffect(() => {
     };
 
     const [entradas, setEntradas] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-    getEntradas().then(data => {
-        setEntradas(data);
-    });
-}, []);
+        const fetchEntradas = async () => {
+            try {
+                const data = await getEntradas();
+                setEntradas(Array.isArray(data) ? data : []);
+            } catch (err) {
+                console.error("Error al cargar entradas en Home:", err);
+                setError("No se pudieron cargar las entradas.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchEntradas();
+    }, []);
 
     return (
         <div className="app-container">
@@ -86,40 +97,48 @@ useEffect(() => {
                     <h2 className="tickets-title">Entradas 2026</h2>
 
                     <div className="tickets-grid">
-                        {entradas.map((entrada) => (
-                            <div className="ticket-card" key={entrada.id}>
+                        {isLoading ? (
+                            <p className="loading-text" style={{ gridColumn: '1 / -1', textAlign: 'center', fontSize: '1.2rem', color: '#ccc' }}>Cargando entradas...</p>
+                        ) : error ? (
+                            <p className="error-text" style={{ gridColumn: '1 / -1', textAlign: 'center', fontSize: '1.2rem', color: '#ff4d4d' }}>{error}</p>
+                        ) : entradas.length > 0 ? (
+                            entradas.map((entrada) => (
+                                <div className="ticket-card" key={entrada.id}>
 
-                                <div className={`ticket-badge ${entrada.tipoEtiqueta}`}>
-                                    {entrada.etiqueta}
+                                    <div className={`ticket-badge ${entrada.tipoEtiqueta}`}>
+                                        {entrada.etiqueta}
+                                    </div>
+
+                                    <div className="ticket-image-wrapper">
+                                        <img src={entrada.img} alt={entrada.nombre} />
+                                    </div>
+
+                                    <div className="ticket-content">
+                                        <h3>{entrada.nombre}</h3>
+
+                                        <p className="ticket-price">
+                                            DESDE {entrada.precio}
+                                        </p>
+
+                                        <button
+                                            className={`ticket-btn ${entrada.estado === "agotado" ? "sold" : ""}`}
+                                            disabled={entrada.estado === "agotado"}
+                                        >
+                                            {entrada.estado === "agotado"
+                                                ? "Sold out"
+                                                : "Comprar"}
+                                        </button>
+
+                                        <p className="ticket-small">
+                                            *Hasta fin de existencias. Gastos incluidos.
+                                        </p>
+                                    </div>
+
                                 </div>
-
-                                <div className="ticket-image-wrapper">
-                                    <img src={entrada.img} alt={entrada.nombre} />
-                                </div>
-
-                                <div className="ticket-content">
-                                    <h3>{entrada.nombre}</h3>
-
-                                    <p className="ticket-price">
-                                        DESDE {entrada.precio}
-                                    </p>
-
-                                    <button
-                                        className={`ticket-btn ${entrada.estado === "agotado" ? "sold" : ""}`}
-                                        disabled={entrada.estado === "agotado"}
-                                    >
-                                        {entrada.estado === "agotado"
-                                            ? "Sold out"
-                                            : "Comprar"}
-                                    </button>
-
-                                    <p className="ticket-small">
-                                        *Hasta fin de existencias. Gastos incluidos.
-                                    </p>
-                                </div>
-
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p className="no-results" style={{ gridColumn: '1 / -1', textAlign: 'center' }}>No hay entradas disponibles</p>
+                        )}
                     </div>
                 </section>  
                 

@@ -9,13 +9,19 @@ function Cartel() {
     const [search, setSearch] = useState("");
     const [artistas, setArtistas] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         getArtistas().then(data => {
             // Nos aseguramos de que data sea un array para evitar errores de .filter
             setArtistas(Array.isArray(data) ? data : []);
+            setIsLoading(false);
         }).catch(err => {
             console.error("Error al cargar artistas:", err);
+            setError("Error al cargar los artistas.");
             setArtistas([]);
+            setIsLoading(false);
         });
     }, []);
 
@@ -45,23 +51,22 @@ function Cartel() {
 
             <section className="artists-section">
                 <div className="artists-grid">
-                    {artistasFiltrados.length > 0 ? (
+                    {isLoading ? (
+                        <p className="loading-text" style={{ gridColumn: '1 / -1', textAlign: 'center', fontSize: '1.2rem', color: '#ccc' }}>Cargando cartelería...</p>
+                    ) : error ? (
+                        <p className="error-text" style={{ gridColumn: '1 / -1', textAlign: 'center', fontSize: '1.2rem', color: '#ff4d4d' }}>{error}</p>
+                    ) : artistasFiltrados.length > 0 ? (
                         artistasFiltrados.map((artista) => (
                             <div className="artist-card" key={artista.id}>
                                 <div className="artist-img-wrapper">
-                                    {/* CORRECCIÓN: imageUrl (Java) o img (Fake) */}
                                     <img src={artista.imageUrl || artista.img} alt={artista.name || artista.nombre} />
                                 </div>
 
                                 <div className="artist-content">
-                                    {/* CORRECCIÓN: name (Java) o nombre (Fake) */}
                                     <h3>{artista.name || artista.nombre}</h3>
-
-                                    {/* CORRECCIÓN: performanceDate (Java) o dia (Fake) */}
                                     <p>{artista.performanceDate || artista.dia}</p>
 
                                     <div className="artist-socials">
-                                        {/* CORRECCIÓN: spotifyUrl (Java) o spoty (Fake) */}
                                         {(artista.spotifyUrl || artista.spoty) && (
                                             <a
                                                 href={artista.spotifyUrl || artista.spoty}
@@ -76,7 +81,7 @@ function Cartel() {
                             </div>
                         ))
                     ) : (
-                        <p className="no-results">No se encontró ningún artista</p>
+                        <p className="no-results" style={{ gridColumn: '1 / -1', textAlign: 'center' }}>No se encontró ningún artista</p>
                     )}
                 </div>
             </section>
