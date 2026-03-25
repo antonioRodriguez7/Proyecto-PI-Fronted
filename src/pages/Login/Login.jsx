@@ -6,14 +6,12 @@ import { loginUsuario } from '../../services/api';
 function Login() {
     const navigate = useNavigate();
 
-    // Estados para controlar el formulario y los errores
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
-        // Evitamos que la página se recargue
         e.preventDefault();
 
         if (!email || !password) {
@@ -25,25 +23,32 @@ function Login() {
         setError('');
 
         try {
-            // 1. Llamada al Backend Real
             const data = await loginUsuario(email, password);
 
-            // 2. Lógica de redirección basada en el ROL que devuelve tu Java
-            // Ajusta los strings ('ROLE_ADMIN', etc.) según lo que tengas en tu DB
-            const role = data.role;
+            // Guardamos los datos necesarios en LocalStorage
+            if (data && data.token) {
+                localStorage.setItem('subsonic_token', data.token);
+                localStorage.setItem('user_role', data.role);
+                localStorage.setItem('user_email', email);
+            }
 
-            if (role === 'ROLE_ADMIN' || role === 'ADMINISTRADOR') {
-                navigate('/perfil-admin');
-            } else if (role === 'ROLE_PROVEEDOR' || role === 'PROVEEDOR') {
-                navigate('/perfil-proveedor');
-            } else {
-                navigate('/perfil'); // Perfil de cliente por defecto
+            const role = data.role ? data.role.toUpperCase().trim() : '';
+            console.log("Acceso concedido. Rol detectado:", role);
+
+            // Redirección profesional según rol
+            if (role === 'ROLE_ADMIN' || role === 'ADMINISTRADOR' || role === 'ADMIN') {
+                window.location.href = '/perfil-admin';
+            }
+            else if (role === 'ROLE_PROVEEDOR' || role === 'PROVEEDOR') {
+                window.location.href = '/perfil-proveedor';
+            }
+            else {
+                window.location.href = '/perfil';
             }
 
         } catch (err) {
-            // 3. Si las credenciales fallan o el servidor no responde
             console.error("Error en el inicio de sesión:", err);
-            setError('Email o contraseña incorrectos. Inténtalo de nuevo.');
+            setError('Email o contraseña incorrectos.');
         } finally {
             setLoading(false);
         }
@@ -51,23 +56,22 @@ function Login() {
 
     return (
         <div className="login-container">
-            {/* MITAD IZQUIERDA */}
             <div className="login-left">
-                {/* Logo vuelve al home */}
+                {/* Logo */}
                 <div className="login-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
                     <img src="/logoPI.png" alt="Logo Subsonic" />
                 </div>
 
                 <div className="login-box">
                     <h2>Iniciar Sesión</h2>
-                    <p>Bienvenido de nuevo al festival</p>
+                    <p>Bienvenido de nuevo</p>
 
                     <form className="login-form" onSubmit={handleLogin}>
                         <div className="input-group">
                             <label>Email</label>
                             <input
                                 type="email"
-                                placeholder="Introduce tu email..."
+                                placeholder="tu@email.com"
                                 value={email}
                                 onChange={(e) => { setEmail(e.target.value); setError(''); }}
                                 required
@@ -86,40 +90,37 @@ function Login() {
                         </div>
 
                         {error && (
-                            <p style={{ color: '#ff4d6d', fontSize: '13px', textAlign: 'center', margin: '10px 0' }}>
+                            <p className="error-msg" style={{ color: '#ff4d6d', fontSize: '13px', textAlign: 'center', margin: '10px 0' }}>
                                 {error}
                             </p>
                         )}
 
-                        <button
-                            type="submit"
-                            className="btn-entrar"
-                            disabled={loading}
-                        >
+                        <button type="submit" className="btn-entrar" disabled={loading}>
                             {loading ? 'CONECTANDO...' : 'ENTRAR'}
                         </button>
                     </form>
 
+                    {/* ✅ AQUÍ ESTÁN LOS ENLACES QUE FALTABAN */}
                     <div className="login-links">
-                        <a href="#olvido" className="link-olvido">
+                        <a href="#olvido" className="link-olvido" style={{ display: 'block', marginBottom: '10px', fontSize: '14px', textDecoration: 'none', color: '#aaa' }}>
                             ¿Olvidaste la contraseña?
                         </a>
 
-                        <p className="link-registro">
+                        <p className="link-registro" style={{ fontSize: '14px', color: '#fff' }}>
                             ¿No tienes cuenta?
                             <span
                                 onClick={() => navigate('/registro')}
-                                style={{ cursor: 'pointer', color: '#df188a', fontWeight: 'bold' }}
+                                style={{ cursor: 'pointer', color: '#df188a', fontWeight: 'bold', marginLeft: '5px' }}
                             >
-                                {' '}Regístrate aquí
+                                Regístrate aquí
                             </span>
                         </p>
                     </div>
                 </div>
             </div>
 
-            {/* MITAD DERECHA */}
             <div className="login-right">
+                {/* Background image/video se gestiona por CSS */}
             </div>
         </div>
     );

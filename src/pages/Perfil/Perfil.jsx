@@ -3,25 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import './Perfil.css';
 
 function Perfil() {
-
     const navigate = useNavigate();
 
-    // Leer usuario guardado por Login
-    const usuarioGuardado = JSON.parse(localStorage.getItem('usuarioActivo') || 'null');
+    // 1. LEER LOS DATOS REALES (Los que guardamos en Login.jsx)
+    const token = localStorage.getItem('subsonic_token');
+    const userRole = localStorage.getItem('user_role');
+    const userEmail = localStorage.getItem('user_email');
 
-    // Si no hay sesión, redirigir al login
+    // 2. PROTECCIÓN DE RUTA: Si no hay token, fuera
     useEffect(() => {
-        if (!usuarioGuardado) navigate('/login');
-    }, []);
+        if (!token) {
+            console.log("No hay token, redirigiendo al login...");
+            navigate('/login');
+        }
+    }, [token, navigate]);
 
-    const tipoUsuario = usuarioGuardado?.tipo || 'cliente';
-
+    // 3. ESTADO DEL PERFIL
+    // Nota: Como no tenemos el objeto 'usuarioActivo' entero,
+    // lo ideal sería hacer un fetch al backend aquí con el token.
     const [perfil, setPerfil] = useState({
-        nombre: usuarioGuardado?.nombre || '',
-        apellidos: usuarioGuardado?.apellido || '',
-        username: usuarioGuardado?.username || '',
-        descripcion: usuarioGuardado?.descripcion || '',
-        email: usuarioGuardado?.email || '',
+        nombre: 'Usuario',
+        apellidos: '',
+        username: userEmail ? userEmail.split('@')[0] : 'usuario',
+        descripcion: '',
+        email: userEmail || '',
         password: ''
     });
 
@@ -30,165 +35,63 @@ function Perfil() {
 
     const nombreCompleto = [perfil.nombre, perfil.apellidos].filter(Boolean).join(' ');
 
+    // 4. LOGOUT CORREGIDO
+    const handleLogout = () => {
+        localStorage.removeItem('subsonic_token');
+        localStorage.removeItem('user_role');
+        localStorage.removeItem('user_email');
+        window.location.href = '/login';
+    };
+
     return (
         <div className="perfil-page">
-
-            {/* CABECERA PERFIL */}
             <div className="perfil-nav">
-                <button
-                    className="btn-atras"
-                    onClick={() => navigate('/')}
-                >
-                    ← Atrás
-                </button>
-
-                <img
-                    src="/logoPI.png"
-                    alt="Logo"
-                    className="perfil-logo"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => navigate('/')}
-                />
-
-                <button
-                    className="btn-logout-nav"
-                    onClick={() => {
-                        localStorage.removeItem('usuarioActivo');
-                        navigate('/login');
-                    }}
-                >
-                    Cerrar Sesión
-                </button>
+                <button className="btn-atras" onClick={() => navigate('/')}>← Atrás</button>
+                <img src="/logoPI.png" alt="Logo" className="perfil-logo" style={{ cursor: 'pointer' }} onClick={() => navigate('/')} />
+                <button className="btn-logout-nav" onClick={handleLogout}>Cerrar Sesión</button>
             </div>
 
             <div className="perfil-container">
-
-                {/* PARTE SUPERIOR */}
                 <div className="perfil-top-section">
-
-                    {/* IZQUIERDA */}
                     <div className="perfil-left">
                         <div className="avatar-circle">
                             <span>{perfil.nombre ? perfil.nombre[0].toUpperCase() : 'U'}</span>
                         </div>
-
-                        <h3 className="perfil-username">
-                            {nombreCompleto || 'Nombre Usuario'}
-                        </h3>
-
-                        {perfil.username && (
-                            <p className="perfil-at-username">@{perfil.username}</p>
-                        )}
-
-                        <p className="perfil-desc-text">
-                            {perfil.descripcion || <span style={{ color: '#555', fontStyle: 'italic' }}>Sin descripción</span>}
-                        </p>
+                        <h3 className="perfil-username">{nombreCompleto}</h3>
+                        <p className="perfil-at-username">@{perfil.username}</p>
+                        <p className="perfil-desc-text">{perfil.descripcion || <i>Sin descripción</i>}</p>
                     </div>
 
-                    {/* DERECHA */}
                     <div className="perfil-right">
                         <form className="perfil-form" onSubmit={e => e.preventDefault()}>
-                            <input
-                                type="text"
-                                placeholder="Nombre"
-                                value={perfil.nombre}
-                                onChange={e => handleChange('nombre', e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Apellidos"
-                                value={perfil.apellidos}
-                                onChange={e => handleChange('apellidos', e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Nombre de usuario"
-                                value={perfil.username}
-                                onChange={e => handleChange('username', e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Descripción usuario"
-                                value={perfil.descripcion}
-                                onChange={e => handleChange('descripcion', e.target.value)}
-                            />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={perfil.email}
-                                onChange={e => handleChange('email', e.target.value)}
-                            />
-                            <input
-                                type="password"
-                                placeholder="Contraseña"
-                                value={perfil.password}
-                                onChange={e => handleChange('password', e.target.value)}
-                            />
-
-                            <button
-                                type="button"
-                                className="btn-guardar"
-                            >
-                                Guardar Cambios
-                            </button>
+                            <input type="text" placeholder="Nombre" value={perfil.nombre} onChange={e => handleChange('nombre', e.target.value)} />
+                            <input type="email" placeholder="Email" value={perfil.email} readOnly />
+                            <button type="button" className="btn-guardar">Guardar Cambios</button>
                         </form>
                     </div>
                 </div>
 
-                {/* DIVISOR */}
                 <hr className="perfil-divider" />
 
-                {/* SECCIÓN INFERIOR: panel para admin/proveedor, productos para cliente */}
                 <div className="perfil-bottom-section">
-                    {(tipoUsuario === 'administrador' || tipoUsuario === 'proveedor') ? (
+                    {/* Ajustado para usar userRole */}
+                    {(userRole === 'ROLE_ADMIN' || userRole === 'ROLE_PROVEEDOR') ? (
                         <div className="panel-admin-wrapper">
                             <h3 className="section-title">
-                                {tipoUsuario === 'administrador' ? 'Administración' : 'Panel de Proveedor'}
+                                {userRole === 'ROLE_ADMIN' ? 'Administración' : 'Panel de Proveedor'}
                             </h3>
-                            <p className="perfil-desc-text" style={{ marginBottom: '24px' }}>
-                                {tipoUsuario === 'administrador'
-                                    ? 'Accede al panel de administración para gestionar artistas, entradas y espacios.'
-                                    : 'Accede a tu panel de proveedor para gestionar tus espacios y servicios.'}
-                            </p>
                             <button
                                 className="btn-panel-admin"
-                                onClick={() => navigate(
-                                    tipoUsuario === 'administrador'
-                                        ? '/perfil-admin'
-                                        : '/perfil-proveedor'
-                                )}
+                                onClick={() => navigate(userRole === 'ROLE_ADMIN' ? '/perfil-admin' : '/perfil-proveedor')}
                             >
-                                Panel de Administración
+                                Panel de Gestión
                             </button>
                         </div>
                     ) : (
-                        <>
-                            <h3 className="section-title">Productos adquiridos</h3>
-                            <div className="productos-grid">
-                                <div className="producto-card">
-                                    <div className="producto-img">🎟️</div>
-                                    <p>Abono 3 Días</p>
-                                </div>
-                                <div className="producto-card">
-                                    <div className="producto-img">⭐</div>
-                                    <p>Pase VIP</p>
-                                </div>
-                                <div className="producto-card">
-                                    <div className="producto-img">👕</div>
-                                    <p>Camiseta Subsonic</p>
-                                </div>
-                                <div className="producto-card">
-                                    <div className="producto-img">🚌</div>
-                                    <p>Bus Lanzadera</p>
-                                </div>
-                                <div className="producto-card empty">
-                                    <p>+</p>
-                                </div>
-                            </div>
-                        </>
+                        <h3 className="section-title">Mis Entradas</h3>
+                        // ... resto de tus productos ...
                     )}
                 </div>
-
             </div>
         </div>
     );

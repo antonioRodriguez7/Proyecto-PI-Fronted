@@ -1,121 +1,130 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081/api';
+// 1. Definimos las URLs de ambos microservicios
+const URL_USUARIOS = 'http://localhost:8080/api';  // Microservicio de Usuarios/Auth
+const URL_CONTENIDO = 'http://localhost:8081/api'; // Microservicio de Contenido (Artistas, Entradas, etc.)
 
-const api = axios.create({
-    baseURL: API_BASE_URL
+// 2. Creamos dos instancias de Axios
+const apiUsuarios = axios.create({
+    baseURL: URL_USUARIOS
 });
 
-// Interceptor para pegar el Token en cada llamada
-api.interceptors.request.use((config) => {
+const apiContenido = axios.create({
+    baseURL: URL_CONTENIDO
+});
+
+// 3. Interceptor único para añadir el Token a ambas instancias
+const authInterceptor = (config) => {
     const token = localStorage.getItem('subsonic_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
-});
+};
 
-/* ========== ARTISTAS ========== */
+apiUsuarios.interceptors.request.use(authInterceptor);
+apiContenido.interceptors.request.use(authInterceptor);
+
+/* ========== ARTISTAS (Contenido - 8081) ========== */
 export async function getArtistas() {
-    const response = await api.get('/artistas');
+    const response = await apiContenido.get('/artistas');
     return response.data;
 }
 
 export async function getArtistasPorDia(dia) {
-    const response = await api.get(`/artistas?dia=${encodeURIComponent(dia)}`);
+    const response = await apiContenido.get(`/artistas?dia=${encodeURIComponent(dia)}`);
     return response.data;
 }
 
 export async function getArtistaById(id) {
-    const response = await api.get(`/artistas/${id}`);
+    const response = await apiContenido.get(`/artistas/${id}`);
     return response.data;
 }
 
-/* ========== ENTRADAS (TICKETS) ========== */
+/* ========== ENTRADAS / TICKETS (Contenido - 8081) ========== */
 export async function getEntradas() {
-    const response = await api.get('/entradas');
+    const response = await apiContenido.get('/entradas');
     return response.data;
 }
 
 export async function getEntradasDisponibles() {
-    const response = await api.get('/entradas/disponibles');
+    const response = await apiContenido.get('/entradas/disponibles');
     return response.data;
 }
 
 export async function getEntradaById(id) {
-    const response = await api.get(`/entradas/${id}`);
+    const response = await apiContenido.get(`/entradas/${id}`);
     return response.data;
 }
 
-/* ========== ESPACIOS ========== */
+/* ========== ESPACIOS (Contenido - 8081) ========== */
 export async function getEspacios() {
-    const response = await api.get('/espacios');
+    const response = await apiContenido.get('/espacios');
     return response.data;
 }
 
 export async function getEspaciosDisponibles() {
-    const response = await api.get('/espacios/disponibles');
+    const response = await apiContenido.get('/espacios/disponibles');
     return response.data;
 }
 
 export async function getEspaciosReservados() {
-    const response = await api.get('/espacios/reservados');
+    const response = await apiContenido.get('/espacios/reservados');
     return response.data;
 }
 
 export async function getEspacioById(id) {
-    const response = await api.get(`/espacios/${id}`);
+    const response = await apiContenido.get(`/espacios/${id}`);
     return response.data;
 }
 
-// Simulando estas funciones desde APIs nuevas
 export async function getEspaciosContratadosProveedor() {
-    const response = await api.get('/espacios/reservados');
+    const response = await apiContenido.get('/espacios/reservados');
     return response.data;
 }
 
-/* ========== FAQS ========== */
+/* ========== FAQS (Contenido - 8081) ========== */
 export async function getFaqsUsuarios() {
-    const response = await api.get('/faqs/usuarios');
+    const response = await apiContenido.get('/faqs/usuarios');
     return response.data;
 }
 
 export async function getFaqsProveedores() {
-    const response = await api.get('/faqs/proveedores');
+    const response = await apiContenido.get('/faqs/proveedores');
     return response.data;
 }
 
 export async function getFaqs() {
-    const response = await api.get('/faqs');
+    const response = await apiContenido.get('/faqs');
     return response.data;
 }
 
-/* ========== SERVICIOS ========== */
+/* ========== SERVICIOS (Contenido - 8081) ========== */
 export async function getServicios() {
-    const response = await api.get('/servicios');
+    const response = await apiContenido.get('/servicios');
     return response.data;
 }
 
-export async function getServiciosProveedor(proveedorId = 1) { // 1 como fallback si no se pasa
-    const response = await api.get(`/servicios/proveedor/${proveedorId}`);
+export async function getServiciosProveedor(proveedorId = 1) {
+    const response = await apiContenido.get(`/servicios/proveedor/${proveedorId}`);
     return response.data;
 }
 
 export async function getServiciosEspacio(espacioId) {
-    const response = await api.get(`/servicios/espacio/${espacioId}`);
+    const response = await apiContenido.get(`/servicios/espacio/${espacioId}`);
     return response.data;
 }
 
 export async function getServicioById(id) {
-    const response = await api.get(`/servicios/${id}`);
+    const response = await apiContenido.get(`/servicios/${id}`);
     return response.data;
 }
 
-/* ========== USUARIOS & AUTENTICACIÓN ========== */
+/* ========== USUARIOS & AUTENTICACIÓN (Usuarios - 8080) ========== */
 
 export async function loginUsuario(email, password) {
     try {
-        const response = await api.post('/auth/login', { email, password });
+        const response = await apiUsuarios.post('/auth/login', { email, password });
         if (response.data && response.data.token) {
             localStorage.setItem('subsonic_token', response.data.token);
             localStorage.setItem('user_email', email);
@@ -123,27 +132,27 @@ export async function loginUsuario(email, password) {
         }
         return response.data;
     } catch (error) {
-        console.error("Error en login real:", error);
+        console.error("Error en login real (Puerto 8080):", error);
         throw error;
     }
 }
 
 export async function registrarUsuario(userData) {
     try {
-        const response = await api.post('/auth/register', userData);
+        const response = await apiUsuarios.post('/auth/register', userData);
         return response.data;
     } catch (error) {
-        console.error("Error en registro real:", error);
+        console.error("Error en registro real (Puerto 8080):", error);
         throw error;
     }
 }
 
 export async function getUsuarios() {
-    const response = await api.get('/users/all'); // Assuming user endpoints remain the same
+    const response = await apiUsuarios.get('/users/all');
     return response.data;
 }
 
 export async function getUsuarioById(id) {
-    const response = await api.get(`/users/${id}`);
+    const response = await apiUsuarios.get(`/users/${id}`);
     return response.data;
 }
