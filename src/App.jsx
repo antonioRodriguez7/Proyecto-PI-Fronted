@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home/Home";
@@ -15,25 +16,48 @@ import PreguntasFrecuentes from "./pages/FAQS/PreguntasFrecuentes";
 import PoliticaPrivacidad from "./pages/PoliticaPrivacidad/PoliticaPrivacidad";
 
 function App() {
-  return (
-    <>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/perfil" element={<Perfil />} />
-      <Route path="/perfil-admin" element={<Perfil_Admin />} />
-      <Route path="/perfil-proveedor" element={<Perfil_Proveedor />} />
-        <Route path="/cartel" element={<Cartel />} />
-        <Route path="/entradas" element={<Entradas />} />
-        <Route path="/servicios" element={<Servicios />} />
-        <Route path="/proveedores" element={<Proveedores />} />
-        <Route path="/faq" element={<PreguntasFrecuentes />} />
-          <Route path="/politica" element={<PoliticaPrivacidad />} />
-      </Routes>
-    </>
-  );
+    const [user, setUser] = useState(null);
+
+    // 1. EFECTO DE PERSISTENCIA: Al cargar la App, miramos si hay sesión guardada
+    useEffect(() => {
+        const token = localStorage.getItem('subsonic_token');
+        const role = localStorage.getItem('user_role');
+        const email = localStorage.getItem('user_email');
+
+        if (token && role) {
+            setUser({ token, role, email });
+        }
+    }, []);
+
+    // 2. FUNCIÓN PARA CERRAR SESIÓN
+    const handleLogout = () => {
+        localStorage.clear();
+        setUser(null);
+        window.location.href = "/"; // Reinicia al Home limpio
+    };
+
+    return (
+        <>
+            <ScrollToTop />
+            <Routes>
+                <Route path="/" element={<Home user={user} />} />
+                <Route path="/login" element={<Login setUser={setUser} />} />
+                <Route path="/registro" element={<Registro />} />
+
+                {/* RUTAS DE PERFIL SEGÚN ROL */}
+                <Route path="/perfil" element={<Perfil user={user} onLogout={handleLogout} />} />
+                <Route path="/perfil-admin" element={<Perfil_Admin user={user} onLogout={handleLogout} />} />
+                <Route path="/perfil-proveedor" element={<Perfil_Proveedor user={user} onLogout={handleLogout} />} />
+
+                <Route path="/cartel" element={<Cartel />} />
+                <Route path="/entradas" element={<Entradas />} />
+                <Route path="/servicios" element={<Servicios />} />
+                <Route path="/proveedores" element={<Proveedores />} />
+                <Route path="/faq" element={<PreguntasFrecuentes />} />
+                <Route path="/politica" element={<PoliticaPrivacidad />} />
+            </Routes>
+        </>
+    );
 }
 
 export default App;
