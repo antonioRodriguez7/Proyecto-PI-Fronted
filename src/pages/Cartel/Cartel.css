@@ -1,238 +1,137 @@
 /* =========================================
-   1. CABECERA (HEADER)
+   2. SECCIÓN CARTEL NEÓN (EL MARCO NARANJA)
    ========================================= */
 
-   /* ESTILO GENERAL DE OPCIONES NAV */
-
-/* HEADER BASE */
-
-.header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 100px;
-    background: rgba(0, 0, 0, 0.95);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 60px;
-    z-index: 1000;
-}
-
-/* NAV CON ESPACIO */
-
-.header nav {
-    display: flex;
-    align-items: center;
-    gap: 40px; /* 🔥 separación horizontal */
-}
-
-/* OPCIONES NAV */
-
-.nav-item {
-    color: white;
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: 0.3s ease;
-    position: relative;
-}
-
-/* HOVER */
-
-.nav-item:hover {
-    color: #00ffff;
-}
-
-/* DROPDOWN */
-
-.nav-dropdown {
-    position: relative;
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: 35px;
-    left: 0;
-    background: #111;
-    padding: 15px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-width: 180px;
-}
-
-.dropdown-item {
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.dropdown-item:hover {
-    color: #00ffff;
-}
-
-/* BOTÓN LOGIN */
-
-.login-btn {
-    padding: 10px 25px;
-    border-radius: 30px;
-    border: 2px solid #00ffff;
-    background: transparent;
-    color: #00ffff;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.login-btn:hover {
-    background: #00ffff;
-    color: black;
-}
-
-.logo img {
-    height: 55px; /* Cambia este número (ej. 30px, 45px) hasta que quede perfecto */
-    /*width: auto; /* Mantiene la proporción para que no se achate */
-    max-width: 200px; /* Límite máximo de ancho por si la imagen es muy alargada */
-    display: block; /* Quita un pequeño margen invisible que traen las imágenes por defecto */
-}
-
-.login-btn {
-    background-color: transparent;
-    border: 2px solid #00e5ff;
-    color: #00e5ff;
-    /* Botón un poco más grande también */
-    padding: 12px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-
-.cartel-page {
-    background: #000;
-    min-height: 100vh;
-}
-
-/* Separación por header fijo */
-.cartel-image-section {
-    padding-top: 120px; 
+.cartel-hero-section {
+    padding-top: 140px; /* Espacio para el header fijo */
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding-bottom: 100px;
+    background: #000;
 }
 
-/* Imagen grande y proporcional */
-.cartel-image {
+.cartel-neon-frame {
     width: 90%;
-    max-width: 1100px;
-    height: auto;
-    border-radius: 25px;
-    box-shadow: 0 0 80px rgba(255, 120, 0, 0.4);
-    transition: 0.4s ease;
+    max-width: 1000px;
+    border: 4px solid #ff7800; /* El naranja de tu cartel */
+    border-radius: 60px;
+    padding: 60px 20px;
+    text-align: center;
+    background: radial-gradient(circle, #111 0%, #000 100%);
+    box-shadow: 0 0 50px rgba(255, 120, 0, 0.3), inset 0 0 20px rgba(255, 120, 0, 0.1);
 }
 
-/* Pequeño efecto premium */
-.cartel-image:hover {
-    transform: scale(1.02);
+.cartel-main-title {
+    color: white;
+    font-size: 3.5rem;
+    font-family: 'Arial Black', sans-serif;
+    letter-spacing: 5px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+.neon-artists-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.neon-artist-name {
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin: 0;
+    text-transform: uppercase;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Efecto al pasar el ratón por los nombres del cartel superior */
+.neon-artist-name:hover {
+    color: #ff7800;
+    text-shadow: 0 0 15px #ff7800;
+    transform: scale(1.05);
+}
+
+.neon-spoty-icon {
+    font-size: 1.5rem;
+    color: #1DB954;
+}
+
+/* =========================================
+   3. BUSCADOR Y SECCIÓN DE TARJETAS
+   ========================================= */
+
+.section-subtitle {
+    text-align: center;
+    color: #ff7800;
+    font-size: 2rem;
+    margin: 80px 0 40px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
 
 .artist-search-section {
     display: flex;
     justify-content: center;
-    margin: 60px 0 30px;
+    margin-bottom: 50px;
 }
 
 .artist-search {
     width: 400px;
-    padding: 14px 20px;
+    padding: 14px 25px;
     border-radius: 50px;
-    border: none;
     background: #111;
     color: white;
     font-size: 1rem;
     outline: none;
-    border: 2px solid #00ffff;
+    border: 2px solid #ff7800; /* Cambiado a naranja para hacer juego */
+    transition: 0.3s;
 }
 
+.artist-search:focus {
+    box-shadow: 0 0 15px rgba(255, 120, 0, 0.4);
+}
+
+/* =========================================
+   4. GRID DE TARJETAS (MANTENIENDO TU BASE)
+   ========================================= */
+
 .artists-section {
-    padding: 20px 8%;
-    padding-bottom: 120px;
+    padding: 0 8% 120px;
 }
 
 .artists-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 260px);
-    justify-content: center;  /* 🔥 CLAVE */
+    grid-template-columns: repeat(auto-fit, 280px);
+    justify-content: center;
     gap: 40px;
 }
 
 .artist-card {
-    background: #111;
+    background: #0a0a0a;
     border-radius: 20px;
     overflow: hidden;
     transition: 0.3s ease;
-    box-shadow: 0 0 40px rgba(0,255,255,0.05);
+    border: 1px solid #222;
 }
 
 .artist-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 0 60px rgba(0,255,255,0.2);
+    transform: translateY(-10px);
+    border-color: #ff7800;
+    box-shadow: 0 10px 40px rgba(255, 120, 0, 0.15);
 }
 
 .artist-img-wrapper {
-    height: 250px;
+    height: 300px; /* Un poco más altas para que luzcan las fotos */
     overflow: hidden;
 }
 
-.artist-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.artist-content {
-    padding: 20px;
-    text-align: center;
-}
-
-.artist-content h3 {
-    color: white;
-    margin-bottom: 8px;
-    font-size: 1.2rem;
-}
-
 .artist-content p {
-    color: #00ffff;
-    margin-bottom: 15px;
-}
-
-.artist-socials {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 1.3rem;
-    cursor: pointer;
-}
-
-.no-results {
-    color: white;
-    text-align: center;
-    margin-top: 40px;
-}
-
-.spotify-icon {
-    color: #1DB954;
-    font-size: 22px;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.spotify-icon:hover {
-    transform: scale(1.2);
+    color: #ff7800; /* Fecha en naranja */
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
 }

@@ -51,14 +51,39 @@ export async function deleteArtist(id) {
 
 /* ========== ENTRADAS / TICKETS (Tickets - 8080) ========== */
 export async function getEntradas() {
-    // Si en tu TicketController tienes @GetMapping("/all")
     const response = await api.get('/tickets/all');
     return response.data;
 }
 
 export async function createTicket(ticketData) {
-    const response = await api.post('/tickets', ticketData);
-    return response.data;
+    // 1. Aseguramos que el precio sea un número
+    const precioNumerico = parseFloat(ticketData.precio) || 0.0;
+
+    // 2. Aseguramos que el stock sea un número entero
+    const stockNumerico = parseInt(ticketData.stock) || 100;
+
+    // 3. Construimos el objeto EXACTO que pide TicketDTO.java
+    const dataParaJava = {
+        category: ticketData.categoria || "General",
+        description: ticketData.descripcion || "Sin descripción",
+        price: precioNumerico,
+        feature: ticketData.caracteristica || "Acceso estándar",
+        imageUrl: ticketData.imagenUrl || "https://via.placeholder.com/300",
+        stock: stockNumerico
+    };
+
+    console.log("Enviando DTO final a Java:", dataParaJava);
+
+    try {
+        // La ruta es /api/tickets (definida en @RequestMapping("/api/tickets"))
+        const response = await api.post('/tickets', dataParaJava);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.error(" Error 400 - Detalles de Java:", error.response.data);
+        }
+        throw error;
+    }
 }
 
 export async function deleteTicket(id) {
