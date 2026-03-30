@@ -9,21 +9,20 @@ import {
     createArtist,
     deleteArtist,
     createTicket,
-    deleteTicket
+    deleteTicket,
+    createSpace,
+    deleteSpace
 } from "../../services/api";
 
 function Perfil_Admin() {
     const navigate = useNavigate();
 
     const [activeSection, setActiveSection] = useState('ARTISTAS');
-    const [selectedEspacio, setSelectedEspacio] = useState(null);
-    const [filtros, setFiltros] = useState({ zona: [], tamano: [], precio: [] });
-    const [searchQuery, setSearchQuery] = useState('');
-
     const [espacios, setEspacios] = useState([]);
     const [artistas, setArtistas] = useState([]);
     const [entradas, setEntradas] = useState([]);
 
+    // --- ESTADOS PARA FORMULARIOS ---
     const [nuevoArtista, setNuevoArtista] = useState({
         nombre: '', diaSemana: '', diaMes: '', mes: '', spotifyUrl: '', imagenUrl: ''
     });
@@ -32,9 +31,15 @@ function Perfil_Admin() {
         categoria: '', descripcion: '', precio: '', caracteristica: '', imagenUrl: ''
     });
 
+    // 🔥 ESTA ES LA VARIABLE QUE FALTABA Y HACÍA QUE SE PUSIERA NEGRO
+    const [nuevoEspacio, setNuevoEspacio] = useState({
+        name: '', type: 'Foodtruck', price: '', sizeSquareMeters: '', isRented: false
+    });
+
     const [loadingAdmin, setLoadingAdmin] = useState(true);
     const [mensaje, setMensaje] = useState({ texto: '', tipo: '' });
 
+    // --- CARGA DE DATOS ---
     const loadAllData = async () => {
         setLoadingAdmin(true);
         try {
@@ -46,21 +51,20 @@ function Perfil_Admin() {
 
             setEspacios(Array.isArray(espaciosData) ? espaciosData : []);
 
-            // CORRECCIÓN: Mapear los campos según el TicketDTO de Java
             setEntradas(Array.isArray(entradasData) ? entradasData.map(e => ({
                 id: e.id,
-                categoria: e.category || '',      // Usar 'category' de Java
-                descripcion: e.description || '', // Usar 'description' de Java
-                precio: e.price || '',           // Usar 'price' de Java
-                caracteristica: e.feature || '',  // Usar 'feature' de Java
-                imagen: e.imageUrl || null        // Usar 'imageUrl' de Java
+                categoria: e.category || '',
+                descripcion: e.description || '',
+                precio: e.price || '',
+                caracteristica: e.feature || '',
+                imagen: e.imageUrl || null
             })) : []);
 
             setArtistas(Array.isArray(artistasData) ? artistasData.map(a => {
                 const partes = (a.dia || a.performanceDate || '').split(' ');
                 return {
                     id: a.id,
-                    nombre: a.name || a.nombre || '', // Soporta 'name' de Java
+                    nombre: a.name || a.nombre || '',
                     diaSemana: partes[0] || '',
                     diaMes: partes[1] || '',
                     mes: partes[2] || '',
@@ -84,12 +88,13 @@ function Perfil_Admin() {
         setTimeout(() => setMensaje({ texto: '', tipo: '' }), 4000);
     };
 
+    // --- LÓGICA ARTISTAS ---
     const handleAddArtista = async () => {
         if (!nuevoArtista.nombre) return;
         try {
             const artistDTO = {
-                nombre: nuevoArtista.nombre,
-                dia: `${nuevoArtista.diaSemana} ${nuevoArtista.diaMes} ${nuevoArtista.mes}`,
+                name: nuevoArtista.nombre,
+                performanceDate: `${nuevoArtista.diaSemana} ${nuevoArtista.diaMes} ${nuevoArtista.mes}`,
                 spotifyUrl: nuevoArtista.spotifyUrl,
                 imageUrl: nuevoArtista.imagenUrl || "https://via.placeholder.com/300"
             };
@@ -106,17 +111,24 @@ function Perfil_Admin() {
         if (!window.confirm("¿Eliminar este artista?")) return;
         try {
             await deleteArtist(id);
-            setArtistas(prev => prev.filter(a => a.id !== id));
+            loadAllData();
             mostrarMensaje("Artista eliminado", "success");
         } catch (error) {
             mostrarMensaje("Error al eliminar", "error");
         }
     };
 
+    // --- LÓGICA ENTRADAS ---
     const handleAddEntrada = async () => {
         if (!nuevaEntrada.categoria || !nuevaEntrada.precio) return;
         try {
-            await createTicket(nuevaEntrada);
+            const ticketDTO = {
+                category: nuevaEntrada.categoria,
+                description: nuevaEntrada.descripcion,
+                price: parseFloat(nuevaEntrada.precio),
+                imageUrl: nuevaEntrada.imagenUrl
+            };
+            await createTicket(ticketDTO);
             mostrarMensaje("Entrada creada correctamente", "success");
             loadAllData();
             setNuevaEntrada({ categoria: '', descripcion: '', precio: '', caracteristica: '', imagenUrl: '' });
@@ -129,31 +141,42 @@ function Perfil_Admin() {
         if (!window.confirm("¿Eliminar esta entrada?")) return;
         try {
             await deleteTicket(id);
-            setEntradas(prev => prev.filter(e => e.id !== id));
+            loadAllData();
             mostrarMensaje("Entrada eliminada", "success");
         } catch (error) {
             mostrarMensaje("Error al eliminar", "error");
         }
     };
 
-    // Funciones de filtro y navegación...
-    const handleFiltroChange = (categoria, valor) => {
-        setFiltros(prev => {
-            const nuevosValores = prev[categoria].includes(valor)
-                ? prev[categoria].filter(v => v !== valor)
-                : [...prev[categoria], valor];
-            return { ...prev, [categoria]: nuevosValores };
-        });
+    // --- LÓGICA ESPACIOS ---
+    const handleAddEspacio = async () => {
+        if (!nuevoEspacio.name || !nuevoEspacio.price) return;
+        try {
+            const spaceDTO = {
+                ...nuevoEspacio,
+                price: parseFloat(nuevoEspacio.price),
+                sizeSquareMeters: parseInt(nuevoEspacio.sizeSquareMeters) || 0
+            };
+            await createSpace(spaceDTO);
+            mostrarMensaje("Espacio creado correctamente", "success");
+            loadAllData();
+            setNuevoEspacio({ name: '', type: 'Foodtruck', price: '', sizeSquareMeters: '', isRented: false });
+        } catch (error) {
+            console.error(error);
+            mostrarMensaje("Error al crear espacio", "error");
+        }
     };
 
-    const espaciosFiltrados = espacios.filter(espacio => {
-        if (filtros.zona.length > 0 && !filtros.zona.includes(espacio.zonaGeneral)) return false;
-        if (searchQuery.trim()) {
-            const q = searchQuery.toLowerCase();
-            return espacio.nombre.toLowerCase().includes(q) || espacio.zonaGeneral.toLowerCase().includes(q);
+    const handleDeleteEspacio = async (id) => {
+        if (!window.confirm("¿Eliminar este espacio?")) return;
+        try {
+            await deleteSpace(id);
+            loadAllData();
+            mostrarMensaje("Espacio eliminado", "success");
+        } catch (error) {
+            mostrarMensaje("Error al eliminar", "error");
         }
-        return true;
-    });
+    };
 
     if (loadingAdmin) return <div className="admin-loading">Cargando Panel de Control...</div>;
 
@@ -182,6 +205,7 @@ function Perfil_Admin() {
                     <div className="admin-profile-circle" onClick={() => navigate('/perfil')}>A</div>
                 </header>
 
+                {/* --- SECCIÓN ARTISTAS --- */}
                 {activeSection === 'ARTISTAS' && (
                     <>
                         <div className="admin-content-box">
@@ -222,7 +246,7 @@ function Perfil_Admin() {
                                         <img src={a.imagen || "/placeholder-artist.jpg"} alt={a.nombre} className="artista-card-img" />
                                         <button className="entrada-delete-btn" onClick={() => handleDeleteArtista(a.id)}>✕</button>
                                         <h4>{a.nombre}</h4>
-                                        <p>{a.diaSemana} {a.diaMes} {a.mes}</p>
+                                        <p>{a.dia}</p>
                                     </div>
                                 ))}
                             </div>
@@ -230,6 +254,7 @@ function Perfil_Admin() {
                     </>
                 )}
 
+                {/* --- SECCIÓN ENTRADAS --- */}
                 {activeSection === 'ENTRADAS' && (
                     <div className="entradas-container">
                         <div className="admin-content-box">
@@ -251,7 +276,6 @@ function Perfil_Admin() {
                                         <h4>{e.categoria}</h4>
                                         <p className="precio-tag">{e.precio}€</p>
                                         <p>{e.descripcion}</p>
-                                        {e.caracteristica && <p><small>{e.caracteristica}</small></p>}
                                     </div>
                                 ))}
                             </div>
@@ -259,9 +283,50 @@ function Perfil_Admin() {
                     </div>
                 )}
 
+                {/* --- SECCIÓN ESPACIOS --- */}
                 {activeSection === 'GESTION_ESPACIOS' && (
                     <div className="espacios-container">
-                        {/* El código de espacios se mantiene igual */}
+                        <div className="admin-content-box">
+                            <h3 className="form-title">REGISTRAR ESPACIO / PARCELA</h3>
+                            <div className="form-grid">
+                                <input type="text" placeholder="Nombre (Parcela A1)" value={nuevoEspacio.name} onChange={e => setNuevoEspacio({...nuevoEspacio, name: e.target.value})} />
+                                <select value={nuevoEspacio.type} onChange={e => setNuevoEspacio({...nuevoEspacio, type: e.target.value})}>
+                                    <option value="Foodtruck">Foodtruck</option>
+                                    <option value="Escenario">Escenario</option>
+                                    <option value="VIP">Zona VIP</option>
+                                    <option value="Merchandising">Tienda</option>
+                                </select>
+                                <input type="number" placeholder="Precio Alquiler (€)" value={nuevoEspacio.price} onChange={e => setNuevoEspacio({...nuevoEspacio, price: e.target.value})} />
+                                <input type="number" placeholder="Metros cuadrados (m²)" value={nuevoEspacio.sizeSquareMeters} onChange={e => setNuevoEspacio({...nuevoEspacio, sizeSquareMeters: e.target.value})} />
+                                <button className="btn-add-artist" onClick={handleAddEspacio}>Guardar Espacio</button>
+                            </div>
+                        </div>
+                        <div className="admin-table-wrapper">
+                            <table className="admin-table">
+                                <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Precio</th>
+                                    <th>m²</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {espacios.map(esp => (
+                                    <tr key={esp.id}>
+                                        <td>{esp.name}</td>
+                                        <td>{esp.type}</td>
+                                        <td>{esp.price}€</td>
+                                        <td>{esp.sizeSquareMeters}</td>
+                                        <td>{esp.isRented ? "OCUPADO" : "LIBRE"}</td>
+                                        <td><button onClick={() => handleDeleteEspacio(esp.id)} className="btn-delete-small">Eliminar</button></td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 )}
                 <Footer />

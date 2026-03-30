@@ -1,33 +1,67 @@
-/* Importamos ambos backends */
+/* ============================================================
+   api.js - PUNTO DE ENTRADA ÚNICO PARA EL FRONTEND
+   ============================================================ */
+
 import * as fake from "./fakeBackend";
 import * as real from "./realBackend";
 
-// Cambia a 'true' si quieres usar datos de prueba sin el servidor encendido
+// Cambia a 'true' si el servidor Spring Boot (8080) está apagado
 const usarBackendFalso = false;
 
 const backend = usarBackendFalso ? fake : real;
 
-// --- GET (Lectura) ---
+/* ------------------------------------------------------------
+   1. ENTIDADES DE LECTURA (GET)
+   Funcionan con Fake (si está activo) o Real
+   ------------------------------------------------------------ */
+
+// Entradas / Tickets
 export const getEntradas = backend.getEntradas;
+
+// Artistas / Lineup
 export const getArtistas = backend.getArtistas;
+
+// Espacios / Logistics
 export const getEspacios = backend.getEspacios;
 export const getEspaciosDisponibles = backend.getEspaciosDisponibles;
 
-// --- AUTH ---
+// FAQ y Otros
+export const getFaqsUsuarios = backend.getFaqsUsuarios;
+export const getFaqsProveedores = backend.getFaqsProveedores;
+
+
+/* ------------------------------------------------------------
+   2. AUTENTICACIÓN Y USUARIOS
+   ------------------------------------------------------------ */
+
 export const loginUsuario = backend.loginUsuario;
 export const registrarUsuario = backend.registrarUsuario;
 export const getUsuarios = backend.getUsuarios;
 export const getUsuarioById = backend.getUsuarioById;
 
-// --- POST / DELETE (Escritura - Solo en realBackend) ---
-// Estas funciones DEBEN estar definidas en tu realBackend.js
+
+/* ------------------------------------------------------------
+   3. OPERACIONES DE ESCRITURA (POST / PUT / DELETE)
+   Estas SIEMPRE van al realBackend (Spring Boot)
+   ------------------------------------------------------------ */
+
+// --- ARTISTAS ---
 export const createArtist = real.createArtist;
 export const deleteArtist = real.deleteArtist;
+
+// --- TICKETS / ENTRADAS ---
 export const createTicket = real.createTicket;
 export const deleteTicket = real.deleteTicket;
 
-// --- OTROS ---
-export const getFaqsUsuarios = backend.getFaqsUsuarios;
-export const getFaqsProveedores = backend.getFaqsProveedores;
+// --- ESPACIOS (NUEVO) ---
+export const createSpace = real.createSpace;     // Llama a POST /api/spaces
+export const updateSpace = real.updateSpace;     // Llama a PUT /api/spaces/:id
+export const deleteSpace = real.deleteSpace;     // Llama a DELETE /api/spaces/:id
+
+
+/* ------------------------------------------------------------
+   4. LOGÍSTICA ESPECÍFICA PROVEEDORES
+   ------------------------------------------------------------ */
+
 export const getEspaciosContratadosProveedor = backend.getEspaciosContratadosProveedor;
 export const getServiciosProveedor = backend.getServiciosProveedor;

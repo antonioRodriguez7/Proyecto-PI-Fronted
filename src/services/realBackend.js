@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-// Ahora solo hay una URL, todo al 8080
 const URL_BASE = 'http://localhost:8080/api';
 
 const api = axios.create({
     baseURL: URL_BASE
 });
 
-// Interceptor para añadir el Token automáticamente en cada petición
+// Interceptor para añadir el Token automáticamente
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('subsonic_token');
     if (token) {
@@ -18,28 +17,21 @@ api.interceptors.request.use((config) => {
 
 /* ========== ARTISTAS (Artists - 8080) ========== */
 export async function getArtistas() {
-    const response = await api.get('/artists/all'); // Coincide con tu @GetMapping("/all")
+    const response = await api.get('/artists/all');
     return response.data;
 }
 
 export async function createArtist(artistData) {
-    // 1. Convertimos la fecha al formato que entiende LocalDate (YYYY-MM-DD)
-    // Como tu formulario envía día y mes por separado, lo ideal sería montar un string ISO.
-    // De momento, para probar, pondremos una fecha fija o intentaremos formatearla:
-    const isoDate = "2026-07-18"; // Formato ISO estricto que requiere LocalDate
-
+    const isoDate = "2026-07-18"; // Fecha por defecto para LocalDate
     const dataParaJava = {
-        name: artistData.nombre,           // de 'nombre' a 'name'
-        spotifyUrl: artistData.spotifyUrl, // de 'spoty' a 'spotifyUrl'
-        imageUrl: artistData.img,          // de 'img' a 'imageUrl'
+        name: artistData.nombre,
+        spotifyUrl: artistData.spotifyUrl,
+        imageUrl: artistData.imageUrl || artistData.img,
         performanceDate: isoDate,
-        genre: "Electronic",               // Campo requerido en tu DTO
-        description: "Artista añadido desde el panel", // Campo requerido
-        stage: "Main Stage"                // Campo requerido
+        genre: "Electronic",
+        description: "Artista añadido desde el panel",
+        stage: "Main Stage"
     };
-
-    console.log("Enviando DTO correcto a Java:", dataParaJava);
-
     const response = await api.post('/artists', dataParaJava);
     return response.data;
 }
@@ -56,34 +48,16 @@ export async function getEntradas() {
 }
 
 export async function createTicket(ticketData) {
-    // 1. Aseguramos que el precio sea un número
-    const precioNumerico = parseFloat(ticketData.precio) || 0.0;
-
-    // 2. Aseguramos que el stock sea un número entero
-    const stockNumerico = parseInt(ticketData.stock) || 100;
-
-    // 3. Construimos el objeto EXACTO que pide TicketDTO.java
     const dataParaJava = {
-        category: ticketData.categoria || "General",
-        description: ticketData.descripcion || "Sin descripción",
-        price: precioNumerico,
-        feature: ticketData.caracteristica || "Acceso estándar",
-        imageUrl: ticketData.imagenUrl || "https://via.placeholder.com/300",
-        stock: stockNumerico
+        category: ticketData.categoria || ticketData.category,
+        description: ticketData.descripcion || ticketData.description,
+        price: parseFloat(ticketData.precio || ticketData.price),
+        feature: ticketData.caracteristica || ticketData.feature || "Acceso estándar",
+        imageUrl: ticketData.imagenUrl || ticketData.imageUrl || "https://via.placeholder.com/300",
+        stock: parseInt(ticketData.stock) || 100
     };
-
-    console.log("Enviando DTO final a Java:", dataParaJava);
-
-    try {
-        // La ruta es /api/tickets (definida en @RequestMapping("/api/tickets"))
-        const response = await api.post('/tickets', dataParaJava);
-        return response.data;
-    } catch (error) {
-        if (error.response) {
-            console.error(" Error 400 - Detalles de Java:", error.response.data);
-        }
-        throw error;
-    }
+    const response = await api.post('/tickets', dataParaJava);
+    return response.data;
 }
 
 export async function deleteTicket(id) {
@@ -92,25 +66,48 @@ export async function deleteTicket(id) {
 }
 
 /* ========== ESPACIOS (Spaces - 8080) ========== */
+
+// Obtener todos los espacios
 export async function getEspacios() {
     const response = await api.get('/spaces/all');
     return response.data;
 }
 
-/* ========== USUARIOS & AUTENTICACIÓN (Auth - 8080) ========== */
+// Crear un espacio (ESTA ES LA QUE TE FALTABA)
+export async function createSpace(spaceData) {
+    const dataParaJava = {
+        name: spaceData.name,
+        type: spaceData.type,
+        price: parseFloat(spaceData.price),
+        sizeSquareMeters: parseInt(spaceData.sizeSquareMeters),
+        isRented: spaceData.isRented || false
+    };
+    console.log("Enviando Espacio a Java:", dataParaJava);
+    const response = await api.post('/spaces', dataParaJava);
+    return response.data;
+}
+
+// Eliminar un espacio (ESTA TAMBIÉN)
+export async function deleteSpace(id) {
+    const response = await api.delete(`/spaces/${id}`);
+    return response.data;
+}
+
+// Actualizar un espacio
+export async function updateSpace(id, spaceData) {
+    const response = await api.put(`/spaces/${id}`, spaceData);
+    return response.data;
+}
+
+/* ========== USUARIOS & AUTENTICACIÓN ========== */
 export async function loginUsuario(email, password) {
-    try {
-        const response = await api.post('/auth/login', { email, password });
-        if (response.data && response.data.token) {
-            localStorage.setItem('subsonic_token', response.data.token);
-            localStorage.setItem('user_email', email);
-            localStorage.setItem('user_role', response.data.role);
-        }
-        return response.data;
-    } catch (error) {
-        console.error("Error en login (8080):", error);
-        throw error;
+    const response = await api.post('/auth/login', { email, password });
+    if (response.data && response.data.token) {
+        localStorage.setItem('subsonic_token', response.data.token);
+        localStorage.setItem('user_email', email);
+        localStorage.setItem('user_role', response.data.role);
     }
+    return response.data;
 }
 
 export async function registrarUsuario(userData) {
@@ -118,15 +115,7 @@ export async function registrarUsuario(userData) {
     return response.data;
 }
 
-// ========== OTROS MÉTODOS (Adaptar según necesites) ==========
-
 export async function getUsuarios() {
     const response = await api.get('/users/all');
-    return response.data;
-}
-
-export async function getFaqsUsuarios() {
-    // Si aún no tienes Controller de FAQs en el 8080, esto dará 404
-    const response = await api.get('/faqs/usuarios');
     return response.data;
 }
