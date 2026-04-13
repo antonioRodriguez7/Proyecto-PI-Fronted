@@ -12,46 +12,14 @@ Proyecto de la asignatura PI (Programación en Internet)
 </p>
 
 
-  <!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block"> 📋 Contenido</h2></summary>
-  <ol>
-    <li>
-      <a href="#%EF%B8%8F-acerca-del-proyecto">Acerca del Proyecto</a>
-    </li>
-    <li>
-      <a href="#%EF%B8%8F-primeros-pasos">Primeros pasos</a>
-    </li>
-    <li><a href="#-c%C3%B3mo-se-usa-la-api">Ejemplos de uso</a></li>
-    <li><a href="#%E2%80%8D%E2%80%8D%E2%80%8D-miembros-del-grupo-3-lab-2">Miembros</a></li>
-    <li><a href="#%EF%B8%8F-licencia">Licencia</a></li>
-    <li><a href="#-contacto">Contacto</a></li>
-  </ol>
-</details>
-
-
 <!-- ABOUT THE PROJECT -->
 ## ✏️ Acerca del Proyecto
 
 Creado por el Grupo 3 (Lab 2), Copyright © 2026 Grupo 3 (Lab 2) PI.
 
 ### Lenguajes de Programación
-
-* *Todavia en desarrollo*
-<!-- * ♨️ Java
-* ♦️ Angular -->
-
-### Diagramas
-* *Todavia en desarrollo*
-
-### Bases de datos MySQL o MongoDB
-* *Todavia en desarrollo, se creara en la carpeta de Recursos*
-
-
-<!-- GETTING STARTED -->
-## ⌨️ Primeros pasos
-
-*Todavia en desarrollo*
+Frontend -> React
+Backend -> Spring
 
 
 <!-- USAGE EXAMPLES -->
