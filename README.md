@@ -1,4 +1,4 @@
-# Subsonic Festival APP
+# Subsonic Festival APP -> L2G3
 Proyecto de la asignatura PI (Programación en Internet)
 <p align="center">
 <h2 align="center">Subsonic Festival</h2>
