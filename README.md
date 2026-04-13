@@ -19,6 +19,7 @@ Creado por el Grupo 3 (Lab 2), Copyright © 2026 Grupo 3 (Lab 2) PI.
 
 ### Lenguajes de Programación
 Frontend -> React
+
 Backend -> Spring
 
 
